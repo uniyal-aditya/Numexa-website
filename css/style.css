@@ -1,0 +1,434 @@
+/* ---------- theme & tokens ---------- */
+:root {
+    --bg: #06080c;
+    --panel: #0f1419;
+    --panel-2: #0b1115;
+    --muted: #94a3b8;
+    --text: #e7eef8;
+    --accent: #06b6d4;
+    --accent-2: #22d3ee;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+    --radius: 14px;
+    --maxw: 1200px;
+}
+
+/* ---------- base ---------- */
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%
+}
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+/* ---------- animated grid background ---------- */
+.math-bg {
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: -2;
+}
+
+.floating {
+    position: fixed;
+    font-family: var(--mono);
+    color: rgba(255, 255, 255, 0.05);
+    font-size: 2rem;
+    pointer-events: none;
+    animation: float 18s linear infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(120vh) rotate(0deg)
+    }
+
+    100% {
+        transform: translateY(-120vh) rotate(360deg)
+    }
+}
+
+/* ---------- header ---------- */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(7, 9, 13, 0.85);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.nav {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px
+}
+
+.mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #021118;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.brand-text .title {
+    font-weight: 700
+}
+
+.brand-text .subtitle {
+    font-size: 0.85rem;
+    color: var(--muted)
+}
+
+/* menu */
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 14px
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 8px 10px;
+    border-radius: 8px;
+}
+
+.nav-btn:hover {
+    color: var(--accent)
+}
+
+.cta.invite {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color: #021118;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+/* ---------- page content ---------- */
+main,
+footer {
+    max-width: var(--maxw);
+    margin: 0 auto
+}
+
+main {
+    padding: 28px 20px
+}
+
+/* consistent panels */
+.section {
+    padding: 72px 0
+}
+
+.panel {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
+    border-radius: var(--radius);
+    padding: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* hero */
+.hero {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 36px;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: 2.8rem;
+    margin: 0 0 8px
+}
+
+.lead {
+    color: var(--muted);
+    margin-bottom: 12px
+}
+
+.calc-box input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: #05080c;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 1rem;
+}
+
+.calc-box .out {
+    margin-top: 12px;
+    background: #05080c;
+    padding: 12px;
+    border-radius: 10px;
+    font-family: var(--mono);
+    color: var(--muted)
+}
+
+/* features blocks */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px
+}
+
+.feature {
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.feature:hover {
+    transform: translateY(-6px);
+    transition: .18s;
+    border-color: var(--accent)
+}
+
+/* demo strip and playground preview */
+.demo-strip {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 20px;
+    align-items: start
+}
+
+.demo-controls button {
+    border: 1px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 8px
+}
+
+.demo-output {
+    background: #05080c;
+    padding: 12px;
+    border-radius: 10px;
+    color: var(--muted);
+    font-family: var(--mono)
+}
+
+/* long form content (makes page deep) */
+.long-article {
+    line-height: 1.7;
+    color: var(--muted);
+    margin-top: 16px
+}
+
+.section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.02), transparent);
+    margin: 36px 0;
+    border-radius: 999px
+}
+
+/* playground mini */
+.playground {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 18px;
+}
+
+.editor {
+    min-height: 320px;
+    border-radius: 10px;
+    padding: 12px;
+    background: #05080c;
+    font-family: var(--mono);
+    resize: vertical;
+    overflow: auto;
+}
+
+.sidebar {
+    background: rgba(255, 255, 255, 0.01);
+    padding: 12px;
+    border-radius: 10px;
+    color: var(--muted)
+}
+
+/* discord preview */
+.discord-card {
+    background: #0b1116;
+    border-radius: 12px;
+    padding: 14px;
+    color: var(--muted)
+}
+
+.discord-msg {
+    background: #0f1724;
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start
+}
+
+.discord-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono)
+}
+
+/* plot canvas */
+.plot-canvas {
+    width: 100%;
+    height: 320px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
+    border-radius: 10px;
+    display: block
+}
+
+/* footer */
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 28px 0
+}
+
+.muted {
+    color: var(--muted)
+}
+
+/* small screens */
+@media(max-width:920px) {
+    .hero {
+        grid-template-columns: 1fr
+    }
+
+    .demo-strip {
+        grid-template-columns: 1fr
+    }
+
+    .playground {
+        grid-template-columns: 1fr
+    }
+
+    .menu {
+        display: none
+    }
+}
+
+html.has-custom-cursor,
+html.has-custom-cursor * {
+    cursor: none !important;
+}
+
+#cursor {
+    position: fixed;
+    z-index: 99999;
+    pointer-events: none;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(6, 182, 212, .7);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    will-change: transform;
+}
+
+#cursor.click {
+    transform: translate(-50%, -50%) scale(0.8);
+}
+
+.calculator {
+    width: 320px;
+    background: #05080c;
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.calc-display {
+    background: #020406;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 1.8rem;
+    overflow-x: auto;
+}
+
+.calc-keys {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.calc-keys button {
+    height: 56px;
+    border-radius: 14px;
+    border: none;
+    background: #0e141b;
+    color: var(--text);
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.calc-keys button:hover {
+    background: #141c25;
+}
+
+.calc-keys .op {
+    background: rgba(6, 182, 212, 0.15);
+    color: var(--accent);
+}
+
+.calc-keys .equals {
+    background: linear-gradient(135deg, var(--accent), #22d3ee);
+    color: #021118;
+    font-weight: 700;
+}
+
+.calc-keys .wide {
+    grid-column: span 2;
+}

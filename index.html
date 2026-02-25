@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Numexa — Scientific Computing Platform</title>
+    <meta name="description"
+        content="Numexa — advanced scientific calculator for Discord and web. Playground, live preview, plotting, symbolic math and more." />
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Math library (used for safe parsing and evaluation) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js" defer></script>
+</head>
+
+<body>
+
+    <!-- animated background + floating formulas -->
+    <div id="bgCanvas" class="math-bg" aria-hidden="true"></div>
+    <div class="floating" style="left:6%; animation-delay:0s">∫ sin(x) dx</div>
+    <div class="floating" style="left:42%; animation-delay:3s">π·r²</div>
+    <div class="floating" style="left:78%; animation-delay:6s">Σ aₙ</div>
+
+    <div id="cursor" aria-hidden="true"></div>
+
+    <!-- header -->
+    <header>
+        <div class="nav">
+            <div class="brand">
+                <div class="mark">N</div>
+                <div class="brand-text">
+                    <div class="title">Numexa</div>
+                    <div class="subtitle">Scientific Calculator Platform</div>
+                </div>
+            </div>
+
+            <nav class="menu" role="navigation" aria-label="Main">
+                <button data-view="home" class="nav-btn">Home</button>
+                <button data-view="playground" class="nav-btn">Playground</button>
+                <button data-view="preview" class="nav-btn">Live Bot Preview</button>
+                <button data-view="features" class="nav-btn">Features</button>
+                <button data-view="docs" class="nav-btn">Docs</button>
+                <button data-view="api" class="nav-btn">API</button>
+                <a class="cta invite" href="#invite">Invite Bot</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- main SPA mount -->
+    <main id="app" role="main"></main>
+
+    <!-- footer -->
+    <footer id="site-footer" role="contentinfo" aria-label="Footer">
+        <div class="footer-grid">
+            <div>
+                <strong>Numexa</strong>
+                <p class="muted">Advanced scientific computation platform for Discord and web.</p>
+            </div>
+            <div>
+                <strong>Resources</strong><br>
+                <a href="#" class="muted">Privacy</a><br>
+                <a href="#" class="muted">Terms</a><br>
+                <a href="#" class="muted">Support</a>
+            </div>
+            <div>
+                <strong>Status</strong><br>
+                <a href="#" class="muted">Service Status</a><br>
+                <a href="#" class="muted">Roadmap</a>
+            </div>
+            <div>
+                <strong>Contact</strong><br>
+                <span class="muted">adityauniyal.dev@gmail.com</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- scripts -->
+    <script src="js/cursor.js" defer></script>
+    <script src="js/history.js" defer></script>
+    <script src="js/calculator.js" defer></script>
+    <script src="js/plot.js" defer></script>
+    <script src="js/app.js" defer></script>
+
+    <!-- service worker registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {/* ignore */ });
+        }
+    </script>
+</body>
+
+</html>
