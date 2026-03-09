@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="icon" type="image/png" href="assets/favicon.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
+  <link rel="stylesheet" href="css/style.css"/>
+  <title>Docs — Numexa</title>
+</head>
+<body>
+<canvas id="bgCanvas" aria-hidden="true"></canvas>
+<div class="noise-overlay" aria-hidden="true"></div>
+<div id="cursor" aria-hidden="true"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+<div id="toast-container"></div><header><div class="nav"><a href="index.html" class="brand"><div class="mark"><img src="assets/logo.png" alt="Numexa"/></div><div><div class="brand-title">Numexa</div><div class="brand-sub">Scientific Platform</div></div></a><nav class="menu" role="navigation" aria-label="Main"><a href="index.html" class="nav-btn">Home</a>
+      <a href="playground.html" class="nav-btn">Playground</a>
+      <a href="preview.html" class="nav-btn">Bot Preview</a>
+      <a href="features.html" class="nav-btn">Features</a>
+      <a href="docs.html" class="nav-btn active">Docs</a>
+      <a href="api.html" class="nav-btn">API</a></nav><a class="nav-invite" href="https://discord.com/oauth2/authorize" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg> Invite Bot</a></div></header>
+<main>
+
+  <section class="section">
+    <h1 style="font-size:1.8rem;font-weight:800;margin-bottom:4px">Documentation</h1>
+    <p style="color:var(--muted);margin-bottom:28px">Complete reference for all Numexa capabilities</p>
+    <div class="docs-grid">
+      <div class="docs-nav panel panel-sm">
+        <div class="docs-nav-item active" onclick="highlightDocNav(this)">Getting Started</div>
+        <div class="docs-nav-item" onclick="highlightDocNav(this)">Calculator</div>
+        <div class="docs-nav-item" onclick="highlightDocNav(this)">Calculus</div>
+        <div class="docs-nav-item" onclick="highlightDocNav(this)">Linear Algebra</div>
+        <div class="docs-nav-item" onclick="highlightDocNav(this)">Statistics</div>
+        <div class="docs-nav-item" onclick="highlightDocNav(this)">Discord Commands</div>
+        <div class="docs-nav-item" onclick="highlightDocNav(this)">Keyboard Shortcuts</div>
+      </div>
+      <div class="docs-content">
+
+        <div class="panel panel-glow" style="margin-bottom:16px">
+          <h2>Getting Started</h2>
+          <p>Numexa is a web-based scientific calculator and Discord bot powered by <a href="https://mathjs.org" target="_blank">math.js</a>. Open the Playground to use the calculator UI or write multi-line expressions in Type Mode.</p>
+          <h3>Quick Start</h3>
+          <pre>// Basic arithmetic
+2^10 + sqrt(144)
+
+// Trigonometry (radians by default)
+sin(pi / 6)   // → 0.5
+
+// Derivatives
+derivative(x^3 + 2*x, x)  // → 3x² + 2</pre>
+        </div>
+
+        <div class="panel panel-glow" style="margin-bottom:16px">
+          <h2>Calculator</h2>
+          <p>The Playground has two modes: Calculator UI (button grid) and Type Mode (multi-line editor).</p>
+          <h3>Supported Operators</h3>
+          <table class="cmd-table">
+            <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+            <tr><td>+  -  *  /</td><td>Basic arithmetic</td><td>3 + 4 * 2</td></tr>
+            <tr><td>^  or  **</td><td>Exponent</td><td>2^8</td></tr>
+            <tr><td>%</td><td>Modulo</td><td>17 % 5</td></tr>
+            <tr><td>( )</td><td>Grouping</td><td>(3+4)*2</td></tr>
+          </table>
+          <h3>Constants</h3>
+          <table class="cmd-table">
+            <tr><th>Constant</th><th>Value</th></tr>
+            <tr><td>pi</td><td>3.14159265…</td></tr>
+            <tr><td>e</td><td>2.71828182…</td></tr>
+            <tr><td>i</td><td>√−1 (imaginary unit)</td></tr>
+            <tr><td>Infinity</td><td>∞</td></tr>
+          </table>
+        </div>
+
+        <div class="panel panel-glow" style="margin-bottom:16px">
+          <h2>Calculus</h2>
+          <p>Symbolic derivatives are supported via the math.js <code>derivative()</code> function.</p>
+          <h3>Derivatives</h3>
+          <pre>derivative(x^4, x)           // → 4x³
+derivative(sin(x), x)        // → cos(x)
+derivative(x*e^x, x)         // → e^x + x*e^x
+derivative(log(x), x)        // → 1/x</pre>
+          <h3>Integration</h3>
+          <p>Symbolic integration requires a server-side CAS engine (planned). Numerical integration coming in v1.3.</p>
+        </div>
+
+        <div class="panel panel-glow" style="margin-bottom:16px">
+          <h2>Linear Algebra</h2>
+          <p>Use array syntax <code>[[row1], [row2]]</code> for matrices.</p>
+          <pre>inv([[1,2],[3,4]])            // Inverse
+det([[1,2],[3,4]])            // Determinant → -2
+transpose([[1,2,3],[4,5,6]])  // Transpose
+lusolve([[1,0],[0,1]], [1,2]) // Solve Ax=b</pre>
+        </div>
+
+        <div class="panel panel-glow" style="margin-bottom:16px">
+          <h2>Statistics</h2>
+          <p>Statistical functions accept arrays in <code>[...]</code> syntax.</p>
+          <pre>mean([1,2,3,4,5])      // 3
+std([1,2,3,4,5])       // 1.414...
+variance([1,2,3])      // 0.667
+median([3,1,4,1,5])    // 3</pre>
+        </div>
+
+        <div class="panel panel-glow" style="margin-bottom:16px">
+          <h2>Discord Commands</h2>
+          <table class="cmd-table">
+            <tr><th>Command</th><th>Usage</th><th>Description</th></tr>
+            <tr><td>/calc</td><td>/calc 2^10</td><td>Evaluate expression</td></tr>
+            <tr><td>/plot</td><td>/plot sin(x)</td><td>Plot function graph</td></tr>
+            <tr><td>/derive</td><td>/derive x^3 x</td><td>Differentiate</td></tr>
+            <tr><td>/matrix</td><td>/matrix inv [[1,2],[3,4]]</td><td>Matrix operation</td></tr>
+            <tr><td>/help</td><td>/help</td><td>Show all commands</td></tr>
+          </table>
+        </div>
+
+        <div class="panel panel-glow">
+          <h2>Keyboard Shortcuts</h2>
+          <table class="cmd-table">
+            <tr><th>Key</th><th>Action</th></tr>
+            <tr><td>Enter</td><td>Evaluate expression</td></tr>
+            <tr><td>↑ / ↓</td><td>Navigate history (type mode)</td></tr>
+            <tr><td>Ctrl+L</td><td>Clear display</td></tr>
+            <tr><td>Escape</td><td>Cancel / clear input</td></tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main><footer><div class="footer-inner"><div class="footer-brand"><a href="index.html" class="brand"><div class="mark"><img src="assets/logo.png" alt="Numexa"/></div><div><div class="brand-title">Numexa</div></div></a><p>Advanced scientific computation platform for Discord and web.</p></div><div class="footer-col"><h5>Product</h5><a href="playground.html">Playground</a><a href="preview.html">Bot Preview</a><a href="features.html">Features</a><a href="api.html">API</a></div><div class="footer-col"><h5>Resources</h5><a href="docs.html">Documentation</a><a href="#">Changelog</a><a href="#">Support</a></div><div class="footer-col"><h5>Legal</h5><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div></div><div class="footer-bottom"><span>© 2025 Numexa. Built for math lovers.</span><span class="status-dot">All systems operational</span></div></footer>
+<script src="js/app.js"></script>
+<script>
+function highlightDocNav(el){document.querySelectorAll(".docs-nav-item").forEach(i=>i.classList.remove("active"));el.classList.add("active");}
+</script>
+</body>
+</html>
