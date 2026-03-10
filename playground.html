@@ -1,263 +1,300 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <link rel="icon" type="image/png" href="assets/favicon.png"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap"
+    rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
-  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/style.css" />
   <title>Playground — Numexa</title>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
+
 <body>
-<canvas id="bgCanvas" aria-hidden="true"></canvas>
-<div class="noise-overlay" aria-hidden="true"></div>
-<div id="cursor" aria-hidden="true"></div>
-<div id="cursor-ring" aria-hidden="true"></div>
-<div id="toast-container"></div>
-<header>
-  <div class="nav">
-    <a href="index.html" class="brand">
-      <div class="mark"><img src="assets/logo.png" alt="Numexa"/></div>
-      <div><div class="brand-title">Numexa</div><div class="brand-sub">Scientific Platform</div></div>
-    </a>
-    <nav class="menu" role="navigation" aria-label="Main">
-      <a href="index.html" class="nav-btn">Home</a>
-      <a href="playground.html" class="nav-btn active">Playground</a>
-      <a href="preview.html" class="nav-btn">Bot Preview</a>
-      <a href="features.html" class="nav-btn">Features</a>
-      <a href="docs.html" class="nav-btn">Docs</a>
-      <a href="api.html" class="nav-btn">API</a>
-    </nav>
-    <a class="nav-invite" href="https://discord.com/oauth2/authorize" target="_blank" rel="noopener">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
-      Invite Bot
-    </a>
-  </div>
-</header>
-<main>
-
-  <section class="section">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:20px">
-      <div>
-        <h1 style="font-size:1.8rem;font-weight:800;margin-bottom:4px">Playground</h1>
-        <p style="color:var(--muted);font-size:.88rem">Full calculator or type mode · history saved locally</p>
-      </div>
-      <div class="mode-toggle-wrap">
-        <span>Calculator</span>
-        <div class="toggle" id="modeToggle"><div class="toggle-knob"></div></div>
-        <span>Type Mode</span>
-      </div>
-    </div>
-    <div class="pg-layout" id="pgLayout">
-      <div id="pgMain">
-        <!-- Calculator UI (default) -->
-        <div id="calcView">
-          <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
-            <div class="calculator">
-              <div class="calc-display">
-                <div class="calc-display-sub" id="calcSub"></div>
-                <div class="calc-display-main" id="calcMain">0</div>
-              </div>
-              <div class="calc-keys" id="calcKeys">
-                <button class="fn">sin</button><button class="fn">cos</button><button class="fn">√</button><button class="op">C</button>
-                <button class="fn">tan</button><button class="fn">log</button><button class="fn">π</button><button class="op">⌫</button>
-                <button class="op">%</button><button class="op">(</button><button class="op">)</button><button class="op">÷</button>
-                <button>7</button><button>8</button><button>9</button><button class="op">×</button>
-                <button>4</button><button>5</button><button>6</button><button class="op">−</button>
-                <button>1</button><button>2</button><button>3</button><button class="op">+</button>
-                <button class="wide">0</button><button>.</button><button class="equals">=</button>
-              </div>
-            </div>
-            <div style="flex:1;min-width:200px">
-              <div class="panel panel-sm">
-                <div style="font-size:.75rem;color:var(--muted);font-family:var(--mono);margin-bottom:8px">Quick Input</div>
-                <input id="calcInput" placeholder="Type any expression…" autocomplete="off" spellcheck="false"
-                  style="width:100%;padding:10px 12px;background:#030710;border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none">
-                <button onclick="runCalcInput()" class="run-btn" style="margin-top:10px;width:100%">Evaluate ↵</button>
-                <div id="calcInputOut" class="output-block" style="margin-top:10px"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Type Mode (hidden by default) -->
-        <div id="typeView" style="display:none">
-          <div class="panel">
-            <div style="font-size:.78rem;color:var(--muted);font-family:var(--mono);margin-bottom:10px">Multi-line expression editor — one expression per line</div>
-            <div class="editor-wrap">
-              <div>
-                <textarea id="typeEditor" class="code-editor" placeholder="// One expression per line&#10;2^10&#10;derivative(x^3, x)&#10;sin(pi/4)&#10;inv([[1,2],[3,4]])"></textarea>
-                <button class="run-btn" onclick="runTypeMode()" style="margin-top:10px">▶ Run All</button>
-                <div id="typeOut" class="output-block" style="margin-top:10px"></div>
-              </div>
-              <div class="editor-sidebar">
-                <h4>Functions</h4>
-                <span class="fn-chip" onclick="insertFn('sin(x)')">sin</span>
-                <span class="fn-chip" onclick="insertFn('cos(x)')">cos</span>
-                <span class="fn-chip" onclick="insertFn('tan(x)')">tan</span>
-                <span class="fn-chip" onclick="insertFn('sqrt(x)')">sqrt</span>
-                <span class="fn-chip" onclick="insertFn('log(x)')">log</span>
-                <span class="fn-chip" onclick="insertFn('abs(x)')">abs</span>
-                <span class="fn-chip" onclick="insertFn('ceil(x)')">ceil</span>
-                <span class="fn-chip" onclick="insertFn('floor(x)')">floor</span>
-                <span class="fn-chip" onclick="insertFn('round(x)')">round</span>
-                <span class="fn-chip" onclick="insertFn('exp(x)')">exp</span>
-                <span class="fn-chip" onclick="insertFn('factorial(n)')">factorial</span>
-                <span class="fn-chip" onclick="insertFn('derivative(f,x)')">derivative</span>
-                <span class="fn-chip" onclick="insertFn('inv(A)')">inv</span>
-                <span class="fn-chip" onclick="insertFn('det(A)')">det</span>
-                <span class="fn-chip" onclick="insertFn('transpose(A)')">transpose</span>
-                <span class="fn-chip" onclick="insertFn('mean([…])')">mean</span>
-                <span class="fn-chip" onclick="insertFn('std([…])')">std</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="pg-sidebar">
-        <div class="panel panel-sm" style="margin-bottom:14px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-            <span style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:var(--mono)">History</span>
-            <button onclick="histClear()" style="background:none;border:none;color:var(--muted);font-size:.75rem;cursor:pointer;font-family:var(--mono)">Clear</button>
-          </div>
-          <div id="historyList" class="history-list"></div>
-        </div>
-        <div class="panel panel-sm">
-          <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:var(--mono);margin-bottom:10px">Plot a Function</div>
-          <div class="plot-wrap">
-            <div class="plot-toolbar">
-              <input id="plotInput" placeholder="sin(x) + 0.3*cos(3*x)" value="sin(x)">
-              <button onclick="runPlot()">Plot</button>
-            </div>
-            <canvas id="plotCanvas" class="plot-canvas" width="300" height="200"></canvas>
-            <div class="plot-info" id="plotInfo">Enter a function and click Plot</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
+  <canvas id="bgCanvas" aria-hidden="true"></canvas>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div id="cursor" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+  <div id="toast-container"></div>
+  <header>
+    <div class="nav">
       <a href="index.html" class="brand">
-        <div class="mark"><img src="assets/logo.png" alt="Numexa"/></div>
-        <div><div class="brand-title">Numexa</div></div>
+        <div class="mark"><img src="assets/logo.png" alt="Numexa" /></div>
+        <div>
+          <div class="brand-title">Numexa</div>
+          <div class="brand-sub">Scientific Platform</div>
+        </div>
       </a>
-      <p>Advanced scientific computation platform for Discord and web.</p>
+      <nav class="menu" role="navigation" aria-label="Main">
+        <a href="index.html" class="nav-btn">Home</a>
+        <a href="playground.html" class="nav-btn active">Playground</a>
+        <a href="preview.html" class="nav-btn">Bot Preview</a>
+        <a href="features.html" class="nav-btn">Features</a>
+        <a href="docs.html" class="nav-btn">Docs</a>
+        <a href="api.html" class="nav-btn">API</a>
+      </nav>
+      <a class="nav-invite" href="https://discord.com/oauth2/authorize" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" />
+        </svg>
+        Invite Bot
+      </a>
     </div>
-    <div class="footer-col"><h5>Product</h5><a href="playground.html">Playground</a><a href="preview.html">Bot Preview</a><a href="features.html">Features</a><a href="api.html">API</a></div>
-    <div class="footer-col"><h5>Resources</h5><a href="docs.html">Documentation</a><a href="#">Changelog</a><a href="#">Support</a><a href="#">Roadmap</a></div>
-    <div class="footer-col"><h5>Legal</h5><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2025 Numexa. Built for math lovers.</span>
-    <span class="status-dot">All systems operational</span>
-  </div>
-</footer>
-<script src="js/app.js"></script>
-<script>
+  </header>
+  <main>
 
-  // ── CALC BUTTONS ──
-  let calcExpr = "", calcLast = false;
-  const calcMain = document.getElementById("calcMain");
-  const calcSub  = document.getElementById("calcSub");
-  document.querySelectorAll("#calcKeys button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const t = btn.textContent.trim();
-      if (t === "C")  { calcExpr=""; calcLast=false; calcSub.textContent=""; calcMain.textContent="0"; return; }
-      if (t === "⌫")  { calcExpr=calcExpr.slice(0,-1); calcMain.textContent=calcExpr||"0"; return; }
-      if (t === "=")  {
-        const raw = calcExpr.replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-").replace(/π/g,"pi");
-        calcSub.textContent = calcExpr+" =";
-        evaluateExpr(raw,(res,isErr)=>{
-          calcMain.textContent=isErr?"Error":res;
-          if(!isErr){histAdd(calcExpr,res);calcExpr=res;calcLast=true;}
-        }); return;
-      }
-      if(["sin","cos","tan","log"].includes(t)){if(calcLast){calcExpr="";calcLast=false;}calcExpr+=t+"(";}
-      else if(t==="√"){if(calcLast){calcExpr="";calcLast=false;}calcExpr+="sqrt(";}
-      else if(t==="π"){if(calcLast){calcExpr="";calcLast=false;}calcExpr+="pi";}
-      else{if(calcLast&&/[0-9.]/.test(t)){calcExpr="";calcLast=false;}calcExpr+=t.replace("×","*").replace("÷","/").replace("−","-");}
-      calcMain.textContent=calcExpr||"0";
+    <section class="section">
+      <div
+        style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:20px">
+        <div>
+          <h1 style="font-size:1.8rem;font-weight:800;margin-bottom:4px">Playground</h1>
+          <p style="color:var(--muted);font-size:.88rem">Full calculator or type mode · history saved locally</p>
+        </div>
+        <div class="mode-toggle-wrap">
+          <span>Calculator</span>
+          <div class="toggle" id="modeToggle">
+            <div class="toggle-knob"></div>
+          </div>
+          <span>Type Mode</span>
+        </div>
+      </div>
+      <div class="pg-layout" id="pgLayout">
+        <div id="pgMain">
+          <!-- Calculator UI (default) -->
+          <div id="calcView">
+            <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
+              <div class="calculator">
+                <div class="calc-display">
+                  <div class="calc-display-sub" id="calcSub"></div>
+                  <div class="calc-display-main" id="calcMain">0</div>
+                </div>
+                <div class="calc-keys" id="calcKeys">
+                  <button class="fn">sin</button><button class="fn">cos</button><button class="fn">√</button><button
+                    class="op">C</button>
+                  <button class="fn">tan</button><button class="fn">log</button><button class="fn">π</button><button
+                    class="op">⌫</button>
+                  <button class="op">%</button><button class="op">(</button><button class="op">)</button><button
+                    class="op">÷</button>
+                  <button>7</button><button>8</button><button>9</button><button class="op">×</button>
+                  <button>4</button><button>5</button><button>6</button><button class="op">−</button>
+                  <button>1</button><button>2</button><button>3</button><button class="op">+</button>
+                  <button class="wide">0</button><button>.</button><button class="equals">=</button>
+                </div>
+              </div>
+              <div style="flex:1;min-width:200px">
+                <div class="panel panel-sm">
+                  <div style="font-size:.75rem;color:var(--muted);font-family:var(--mono);margin-bottom:8px">Quick Input
+                  </div>
+                  <input id="calcInput" placeholder="Type any expression…" autocomplete="off" spellcheck="false"
+                    style="width:100%;padding:10px 12px;background:#030710;border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none">
+                  <button onclick="runCalcInput()" class="run-btn" style="margin-top:10px;width:100%">Evaluate
+                    ↵</button>
+                  <div id="calcInputOut" class="output-block" style="margin-top:10px"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Type Mode (hidden by default) -->
+          <div id="typeView" style="display:none">
+            <div class="panel">
+              <div style="font-size:.78rem;color:var(--muted);font-family:var(--mono);margin-bottom:10px">Multi-line
+                expression editor — one expression per line</div>
+              <div class="editor-wrap">
+                <div>
+                  <textarea id="typeEditor" class="code-editor"
+                    placeholder="// One expression per line&#10;2^10&#10;derivative(x^3, x)&#10;sin(pi/4)&#10;inv([[1,2],[3,4]])"></textarea>
+                  <button class="run-btn" onclick="runTypeMode()" style="margin-top:10px">▶ Run All</button>
+                  <div id="typeOut" class="output-block" style="margin-top:10px"></div>
+                </div>
+                <div class="editor-sidebar">
+                  <h4>Functions</h4>
+                  <span class="fn-chip" onclick="insertFn('sin(x)')">sin</span>
+                  <span class="fn-chip" onclick="insertFn('cos(x)')">cos</span>
+                  <span class="fn-chip" onclick="insertFn('tan(x)')">tan</span>
+                  <span class="fn-chip" onclick="insertFn('sqrt(x)')">sqrt</span>
+                  <span class="fn-chip" onclick="insertFn('log(x)')">log</span>
+                  <span class="fn-chip" onclick="insertFn('abs(x)')">abs</span>
+                  <span class="fn-chip" onclick="insertFn('ceil(x)')">ceil</span>
+                  <span class="fn-chip" onclick="insertFn('floor(x)')">floor</span>
+                  <span class="fn-chip" onclick="insertFn('round(x)')">round</span>
+                  <span class="fn-chip" onclick="insertFn('exp(x)')">exp</span>
+                  <span class="fn-chip" onclick="insertFn('factorial(n)')">factorial</span>
+                  <span class="fn-chip" onclick="insertFn('derivative(f,x)')">derivative</span>
+                  <span class="fn-chip" onclick="insertFn('inv(A)')">inv</span>
+                  <span class="fn-chip" onclick="insertFn('det(A)')">det</span>
+                  <span class="fn-chip" onclick="insertFn('transpose(A)')">transpose</span>
+                  <span class="fn-chip" onclick="insertFn('mean([…])')">mean</span>
+                  <span class="fn-chip" onclick="insertFn('std([…])')">std</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pg-sidebar">
+          <div class="panel panel-sm" style="margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <span
+                style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:var(--mono)">History</span>
+              <button onclick="histClear()"
+                style="background:none;border:none;color:var(--muted);font-size:.75rem;cursor:pointer;font-family:var(--mono)">Clear</button>
+            </div>
+            <div id="historyList" class="history-list"></div>
+          </div>
+          <div class="panel panel-sm">
+            <div
+              style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:var(--mono);margin-bottom:10px">
+              Plot a Function</div>
+            <div class="plot-wrap">
+              <div class="plot-toolbar">
+                <input id="plotInput" placeholder="sin(x) + 0.3*cos(3*x)" value="sin(x)">
+                <button onclick="runPlot()">Plot</button>
+              </div>
+              <canvas id="plotCanvas" class="plot-canvas" width="300" height="200"></canvas>
+              <div class="plot-info" id="plotInfo">Enter a function and click Plot</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <div class="mark"><img src="assets/logo.png" alt="Numexa" /></div>
+          <div>
+            <div class="brand-title">Numexa</div>
+          </div>
+        </a>
+        <p>Advanced scientific computation platform for Discord and web.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5><a href="playground.html">Playground</a><a href="preview.html">Bot Preview</a><a
+          href="features.html">Features</a><a href="api.html">API</a>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5><a href="docs.html">Documentation</a><a href="#">Changelog</a><a href="#">Support</a><a
+          href="#">Roadmap</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Numexa. Built for math lovers.</span>
+      <span class="status-dot">All systems operational</span>
+    </div>
+  </footer>
+  <script src="js/app.js"></script>
+  <script>
+
+    // ── CALC BUTTONS ──
+    let calcExpr = "", calcLast = false;
+    const calcMain = document.getElementById("calcMain");
+    const calcSub = document.getElementById("calcSub");
+    document.querySelectorAll("#calcKeys button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const t = btn.textContent.trim();
+        if (t === "C") { calcExpr = ""; calcLast = false; calcSub.textContent = ""; calcMain.textContent = "0"; return; }
+        if (t === "⌫") { calcExpr = calcExpr.slice(0, -1); calcMain.textContent = calcExpr || "0"; return; }
+        if (t === "=") {
+          const raw = calcExpr.replace(/×/g, "*").replace(/÷/g, "/").replace(/−/g, "-").replace(/π/g, "pi");
+          calcSub.textContent = calcExpr + " =";
+          evaluateExpr(raw, (res, isErr) => {
+            calcMain.textContent = isErr ? "Error" : res;
+            if (!isErr) { histAdd(calcExpr, res); calcExpr = res; calcLast = true; }
+          }); return;
+        }
+        if (["sin", "cos", "tan", "log"].includes(t)) { if (calcLast) { calcExpr = ""; calcLast = false; } calcExpr += t + "("; }
+        else if (t === "√") { if (calcLast) { calcExpr = ""; calcLast = false; } calcExpr += "sqrt("; }
+        else if (t === "π") { if (calcLast) { calcExpr = ""; calcLast = false; } calcExpr += "pi"; }
+        else { if (calcLast && /[0-9.]/.test(t)) { calcExpr = ""; calcLast = false; } calcExpr += t.replace("×", "*").replace("÷", "/").replace("−", "-"); }
+        calcMain.textContent = calcExpr || "0";
+      });
     });
-  });
 
-  // ── QUICK INPUT ──
-  function runCalcInput() {
-    const v=document.getElementById("calcInput")?.value?.trim();
-    const out=document.getElementById("calcInputOut"); if(!v||!out)return;
-    out.textContent="Evaluating…";out.style.color="var(--muted)";
-    evaluateExpr(v,(res,isErr)=>{
-      out.textContent=isErr?res:"= "+res; out.style.color=isErr?"var(--red)":"var(--accent-2)";
-      if(!isErr)histAdd(v,res);
+    // ── QUICK INPUT ──
+    function runCalcInput() {
+      const v = document.getElementById("calcInput")?.value?.trim();
+      const out = document.getElementById("calcInputOut"); if (!v || !out) return;
+      out.textContent = "Evaluating…"; out.style.color = "var(--muted)";
+      evaluateExpr(v, (res, isErr) => {
+        out.textContent = isErr ? res : "= " + res; out.style.color = isErr ? "var(--red)" : "var(--accent-2)";
+        if (!isErr) histAdd(v, res);
+      });
+    }
+    document.getElementById("calcInput").addEventListener("keydown", e => { if (e.key === "Enter") runCalcInput(); });
+
+    // ── TYPE MODE ──
+    function runTypeMode() {
+      const ed = document.getElementById("typeEditor"), out = document.getElementById("typeOut");
+      if (!ed || !out) return;
+      const lines = ed.value.split("\n").filter(l => l.trim() && !l.trim().startsWith("//"));
+      if (!lines.length) { out.textContent = "Nothing to run."; return; }
+      out.textContent = "Running…"; let i = 0; const results = [];
+      function next() {
+        if (i >= lines.length) { out.textContent = results.join("\n"); return; }
+        const l = lines[i++];
+        evaluateExpr(l, (res, isErr) => { results.push((isErr ? "⚠ " : "» ") + l + "\n  = " + res); if (!isErr) histAdd(l, res); next(); });
+      } next();
+    }
+    function insertFn(fn) {
+      const ed = document.getElementById("typeEditor"); if (!ed) return;
+      const p = ed.selectionStart; ed.value = ed.value.slice(0, p) + fn + ed.value.slice(p);
+      ed.selectionStart = ed.selectionEnd = p + fn.length; ed.focus();
+    }
+
+    // ── MODE TOGGLE ──
+    document.getElementById("modeToggle").addEventListener("click", function () {
+      this.classList.toggle("active");
+      const isType = this.classList.contains("active");
+      document.getElementById("calcView").style.display = isType ? "none" : "block";
+      document.getElementById("typeView").style.display = isType ? "block" : "none";
     });
-  }
-  document.getElementById("calcInput").addEventListener("keydown",e=>{if(e.key==="Enter")runCalcInput();});
 
-  // ── TYPE MODE ──
-  function runTypeMode() {
-    const ed=document.getElementById("typeEditor"),out=document.getElementById("typeOut");
-    if(!ed||!out)return;
-    const lines=ed.value.split("\n").filter(l=>l.trim()&&!l.trim().startsWith("//"));
-    if(!lines.length){out.textContent="Nothing to run.";return;}
-    out.textContent="Running…";let i=0;const results=[];
-    function next(){
-      if(i>=lines.length){out.textContent=results.join("\n");return;}
-      const l=lines[i++];
-      evaluateExpr(l,(res,isErr)=>{results.push((isErr?"⚠ ":"» ")+l+"\n  = "+res);if(!isErr)histAdd(l,res);next();});
-    }next();
-  }
-  function insertFn(fn){
-    const ed=document.getElementById("typeEditor");if(!ed)return;
-    const p=ed.selectionStart;ed.value=ed.value.slice(0,p)+fn+ed.value.slice(p);
-    ed.selectionStart=ed.selectionEnd=p+fn.length;ed.focus();
-  }
+    // ── PLOT ──
+    function runPlot(silent) {
+      const canvas = document.getElementById("plotCanvas");
+      const input = document.getElementById("plotInput");
+      const info = document.getElementById("plotInfo");
+      if (!canvas) return;
+      const fn = input ? input.value.trim() : "sin(x)"; if (!fn) return;
+      whenMath(() => {
+        const ctx = canvas.getContext("2d"), W = canvas.clientWidth || 300, H = canvas.clientHeight || 200;
+        canvas.width = W * devicePixelRatio; canvas.height = H * devicePixelRatio; ctx.scale(devicePixelRatio, devicePixelRatio);
+        let compiled; try { compiled = math.compile(fn); } catch (e) { if (!silent && info) info.textContent = "Invalid: " + e.message; return; }
+        const xMin = -10, xMax = 10, N = W * 2, pts = [];
+        for (let i = 0; i <= N; i++) { const x = xMin + i / N * (xMax - xMin); try { const y = compiled.evaluate({ x }); pts.push({ x, y: isFinite(y) ? y : NaN }); } catch { pts.push({ x, y: NaN }); } }
+        const validY = pts.map(p => p.y).filter(v => !isNaN(v) && isFinite(v)); if (!validY.length) { if (info) info.textContent = "No valid points"; return; }
+        let yMin = Math.min(...validY), yMax = Math.max(...validY); if (yMin === yMax) { yMin -= 1; yMax += 1; }
+        const pad = (yMax - yMin) * .12; yMin -= pad; yMax += pad;
+        const px = x => (x - xMin) / (xMax - xMin) * W, py = y => H - (y - yMin) / (yMax - yMin) * H;
+        ctx.fillStyle = "#030710"; ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "rgba(6,182,212,0.06)"; ctx.lineWidth = 1;
+        for (let gx = Math.ceil(xMin); gx <= xMax; gx++) { ctx.beginPath(); ctx.moveTo(px(gx), 0); ctx.lineTo(px(gx), H); ctx.stroke(); }
+        for (let gy = Math.ceil(yMin); gy <= yMax; gy++) { ctx.beginPath(); ctx.moveTo(0, py(gy)); ctx.lineTo(W, py(gy)); ctx.stroke(); }
+        ctx.strokeStyle = "rgba(6,182,212,0.2)"; ctx.lineWidth = 1.5;
+        if (yMin <= 0 && yMax >= 0) { ctx.beginPath(); ctx.moveTo(0, py(0)); ctx.lineTo(W, py(0)); ctx.stroke(); }
+        if (xMin <= 0 && xMax >= 0) { ctx.beginPath(); ctx.moveTo(px(0), 0); ctx.lineTo(px(0), H); ctx.stroke(); }
+        ctx.shadowColor = "rgba(6,182,212,0.5)"; ctx.shadowBlur = 8;
+        ctx.strokeStyle = "#22d3ee"; ctx.lineWidth = 2; ctx.lineJoin = "round"; ctx.beginPath();
+        let started = false;
+        for (const p of pts) { if (isNaN(p.y)) { started = false; continue; } const sx = px(p.x), sy = py(p.y); if (!started) { ctx.moveTo(sx, sy); started = true; } else ctx.lineTo(sx, sy); }
+        ctx.stroke(); ctx.shadowBlur = 0;
+        if (info) info.textContent = "f(x) = " + fn + "  ·  x ∈ [" + xMin + ", " + xMax + "]";
+        if (!silent) showToast("Plotted: " + fn, "success");
+      });
+    }
+    setTimeout(() => runPlot(true), 300);
 
-  // ── MODE TOGGLE ──
-  document.getElementById("modeToggle").addEventListener("click",function(){
-    this.classList.toggle("active");
-    const isType=this.classList.contains("active");
-    document.getElementById("calcView").style.display=isType?"none":"block";
-    document.getElementById("typeView").style.display=isType?"block":"none";
-  });
-
-  // ── PLOT ──
-  function runPlot(silent){
-    const canvas=document.getElementById("plotCanvas");
-    const input=document.getElementById("plotInput");
-    const info=document.getElementById("plotInfo");
-    if(!canvas)return;
-    const fn=input?input.value.trim():"sin(x)";if(!fn)return;
-    whenMath(()=>{
-      const ctx=canvas.getContext("2d"),W=canvas.clientWidth||300,H=canvas.clientHeight||200;
-      canvas.width=W*devicePixelRatio;canvas.height=H*devicePixelRatio;ctx.scale(devicePixelRatio,devicePixelRatio);
-      let compiled;try{compiled=math.compile(fn);}catch(e){if(!silent&&info)info.textContent="Invalid: "+e.message;return;}
-      const xMin=-10,xMax=10,N=W*2,pts=[];
-      for(let i=0;i<=N;i++){const x=xMin+i/N*(xMax-xMin);try{const y=compiled.evaluate({x});pts.push({x,y:isFinite(y)?y:NaN});}catch{pts.push({x,y:NaN});}}
-      const validY=pts.map(p=>p.y).filter(v=>!isNaN(v)&&isFinite(v));if(!validY.length){if(info)info.textContent="No valid points";return;}
-      let yMin=Math.min(...validY),yMax=Math.max(...validY);if(yMin===yMax){yMin-=1;yMax+=1;}
-      const pad=(yMax-yMin)*.12;yMin-=pad;yMax+=pad;
-      const px=x=>(x-xMin)/(xMax-xMin)*W,py=y=>H-(y-yMin)/(yMax-yMin)*H;
-      ctx.fillStyle="#030710";ctx.fillRect(0,0,W,H);
-      ctx.strokeStyle="rgba(6,182,212,0.06)";ctx.lineWidth=1;
-      for(let gx=Math.ceil(xMin);gx<=xMax;gx++){ctx.beginPath();ctx.moveTo(px(gx),0);ctx.lineTo(px(gx),H);ctx.stroke();}
-      for(let gy=Math.ceil(yMin);gy<=yMax;gy++){ctx.beginPath();ctx.moveTo(0,py(gy));ctx.lineTo(W,py(gy));ctx.stroke();}
-      ctx.strokeStyle="rgba(6,182,212,0.2)";ctx.lineWidth=1.5;
-      if(yMin<=0&&yMax>=0){ctx.beginPath();ctx.moveTo(0,py(0));ctx.lineTo(W,py(0));ctx.stroke();}
-      if(xMin<=0&&xMax>=0){ctx.beginPath();ctx.moveTo(px(0),0);ctx.lineTo(px(0),H);ctx.stroke();}
-      ctx.shadowColor="rgba(6,182,212,0.5)";ctx.shadowBlur=8;
-      ctx.strokeStyle="#22d3ee";ctx.lineWidth=2;ctx.lineJoin="round";ctx.beginPath();
-      let started=false;
-      for(const p of pts){if(isNaN(p.y)){started=false;continue;}const sx=px(p.x),sy=py(p.y);if(!started){ctx.moveTo(sx,sy);started=true;}else ctx.lineTo(sx,sy);}
-      ctx.stroke();ctx.shadowBlur=0;
-      if(info)info.textContent="f(x) = "+fn+"  ·  x ∈ ["+xMin+", "+xMax+"]";
-      if(!silent)showToast("Plotted: "+fn,"success");
-    });
-  }
-  setTimeout(()=>runPlot(true),300);
-
-</script>
+  </script>
 </body>
+
 </html>
