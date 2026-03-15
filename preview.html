@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Bot Preview — Numexa</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=3" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js" defer></script>
   <style>
     .preview-layout {
@@ -493,7 +493,7 @@
     </div>
   </footer>
 
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=3"></script>
   <script>
     const feed = document.getElementById('discordFeed');
     const input = document.getElementById('discordIn');
@@ -535,6 +535,28 @@
     document.querySelectorAll('.ex-btn').forEach(b => {
       b.addEventListener('click', () => { input.value = b.dataset.ex; sendMsg(); });
     });
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then(reg => {
+          // When a new SW is waiting, immediately activate it and reload
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // New version available — force all tabs to reload
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                  window.location.reload();
+                });
+                newWorker.postMessage({ type: 'SKIP_WAITING' });
+              }
+            });
+          });
+        }).catch(err => console.warn('SW registration failed:', err));
+      });
+    }
   </script>
 </body>
 
