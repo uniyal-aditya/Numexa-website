@@ -1,174 +1,537 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="icon" type="image/png" href="assets/favicon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap"
-    rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
-  <link rel="stylesheet" href="css/style.css" />
   <title>Bot Preview — Numexa</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js" defer></script>
+  <style>
+    .preview-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* DISCORD SHELL */
+    .discord-shell {
+      background: #313338;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .08);
+      box-shadow: 0 32px 80px rgba(0, 0, 0, .5);
+    }
+
+    .discord-titlebar {
+      background: #2b2d31;
+      padding: 12px 18px;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, .7);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+      font-family: 'Whitney', var(--mono);
+    }
+
+    .channel-icon {
+      color: rgba(255, 255, 255, .35);
+      font-size: 16px;
+    }
+
+    .bot-status {
+      margin-left: auto;
+      font-size: 10px;
+      color: #23a559;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .bot-status::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background: #23a559;
+      border-radius: 50;
+      display: block;
+    }
+
+    .discord-body {
+      padding: 20px 16px;
+      min-height: 420px;
+      max-height: 420px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .discord-body::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .discord-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .discord-body::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, .1);
+      border-radius: 2px;
+    }
+
+    .d-msg {
+      display: flex;
+      gap: 12px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      transition: background .15s;
+    }
+
+    .d-msg:hover {
+      background: rgba(0, 0, 0, .1);
+    }
+
+    .d-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .d-avatar.user {
+      background: linear-gradient(135deg, #5865f2, #8b5cf6);
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .d-avatar.bot {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      font-size: 13px;
+    }
+
+    .d-content {
+      flex: 1;
+    }
+
+    .d-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, .9);
+      margin-bottom: 2px;
+    }
+
+    .d-name .bot-tag {
+      font-size: 9px;
+      background: #5865f2;
+      color: #fff;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+
+    .d-text {
+      font-size: 13px;
+      color: rgba(255, 255, 255, .75);
+      line-height: 1.5;
+    }
+
+    .d-text code {
+      background: rgba(0, 0, 0, .3);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #e3e5e8;
+    }
+
+    /* EMBED */
+    .d-embed {
+      margin-top: 6px;
+      background: #2b2d31;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 12px 14px;
+      max-width: 420px;
+    }
+
+    .embed-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .embed-result {
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: #57f287;
+    }
+
+    .embed-meta {
+      font-size: 10px;
+      color: rgba(255, 255, 255, .3);
+      margin-top: 6px;
+    }
+
+    /* INPUT */
+    .discord-input-row {
+      padding: 12px 16px;
+      background: #383a40;
+      border-top: 1px solid rgba(255, 255, 255, .06);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slash-badge {
+      background: #5865f2;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .discord-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: rgba(255, 255, 255, .75);
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 0;
+      cursor: none;
+    }
+
+    .discord-input::placeholder {
+      color: rgba(255, 255, 255, .25);
+    }
+
+    .discord-send {
+      background: #5865f2;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 14px;
+      font-size: 11px;
+      font-family: var(--display);
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      cursor: none;
+      transition: background .15s;
+    }
+
+    .discord-send:hover {
+      background: #4752c4;
+    }
+
+    /* SIDEBAR */
+    .cmd-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 14px;
+    }
+
+    .cmd-panel-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+
+    .cmd-row-sm {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      gap: 12px;
+    }
+
+    .cmd-row-sm:last-child {
+      border-bottom: none;
+    }
+
+    .cmd-name-sm {
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .cmd-desc-sm {
+      color: var(--muted);
+      font-size: 11px;
+      text-align: right;
+    }
+
+    .example-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ex-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: none;
+      transition: all .15s;
+    }
+
+    .ex-btn:hover {
+      border-color: var(--accent);
+      background: rgba(124, 110, 255, .06);
+    }
+
+    .ex-btn-code {
+      color: var(--accent);
+      font-size: 11px;
+    }
+
+    .ex-btn-label {
+      color: var(--dim);
+      font-size: 10px;
+    }
+
+    .ex-btn-arrow {
+      color: var(--dim);
+    }
+
+    @media(max-width:900px) {
+      .preview-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <canvas id="bgCanvas" aria-hidden="true"></canvas>
-  <div class="noise-overlay" aria-hidden="true"></div>
-  <div id="cursor" aria-hidden="true"></div>
-  <div id="cursor-ring" aria-hidden="true"></div>
-  <div id="toast-container"></div>
-  <header>
-    <div class="nav">
-      <a href="index.html" class="brand">
-        <div class="mark"><img src="assets/logo.png" alt="Numexa" /></div>
-        <div>
-          <div class="brand-title">Numexa</div>
-          <div class="brand-sub">Scientific Platform</div>
-        </div>
-      </a>
-      <nav class="menu" role="navigation" aria-label="Main"><a href="index.html" class="nav-btn">Home</a>
-        <a href="playground.html" class="nav-btn">Playground</a>
-        <a href="preview.html" class="nav-btn active">Bot Preview</a>
-        <a href="features.html" class="nav-btn">Features</a>
-        <a href="docs.html" class="nav-btn">Docs</a>
-        <a href="api.html" class="nav-btn">API</a>
-      </nav>
-      <a class="nav-invite" href="https://discord.com/oauth2/authorize" target="_blank" rel="noopener"><svg width="16"
-          height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" />
-        </svg> Invite Bot</a>
-    </div>
-  </header>
-  <main>
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+  <canvas id="bgCanvas"></canvas>
+  <div class="grain"></div>
+  <div id="toast"></div>
 
-    <section class="section">
-      <h1 style="font-size:1.8rem;font-weight:800;margin-bottom:6px">Live Bot Preview</h1>
-      <p style="color:var(--muted);margin-bottom:24px">Simulate exactly how Numexa responds in your Discord server.</p>
-      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:start;flex-wrap:wrap">
+  <nav class="top-nav">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Numexa" style="width:34px;height:34px;border-radius:8px;display:block;box-shadow:0 0 16px rgba(6,182,212,.35);">
+      <span class="nav-logo-name">Numexa</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="playground.html">Playground</a></li>
+      <li><a href="preview.html" class="active">Bot Preview</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="docs.html">Docs</a></li>
+      <li><a href="api.html">API</a></li>
+    </ul>
+    <div class="nav-right">    <a href="https://discord.gg/rVpRZskrXC" class="nav-support" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
+      Support Server
+    </a>
+    
+    <a href="https://discord.com/oauth2/authorize?client_id=1460289617264775333&permissions=8445231037279296&integration_type=0&scope=applications.commands+bot"
+      class="nav-cta" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" />
+      </svg>
+      Add to Discord
+    </a>
+    </div>
+  </nav>
+
+  <div class="page">
+    <div class="page-hero">
+      <div class="page-hero-eyebrow"><span class="pulse-dot"></span>Discord Integration</div>
+      <h1>Live Bot Preview</h1>
+      <p>See exactly how Numexa responds in your Discord server. Type any expression below and hit Send.</p>
+    </div>
+
+    <div class="section">
+      <div class="preview-layout">
+        <!-- DISCORD SHELL -->
         <div class="discord-shell">
-          <div class="discord-titlebar"><span>#math-bot</span>&nbsp;|&nbsp; Numexa Bot · Online</div>
+          <div class="discord-titlebar">
+            <span class="channel-icon">#</span>
+            <span>math-bot</span>
+            <div class="bot-status">Numexa · Online</div>
+          </div>
           <div class="discord-body" id="discordFeed">
-            <div class="discord-msg">
-              <div class="discord-avatar avatar-bot">N</div>
-              <div class="discord-msg-content">
-                <div class="name">Numexa <span class="bot-tag">BOT</span></div>
-                <div class="msg-text">👋 Hi! Use <code>/calc</code> to evaluate math, <code>/plot</code> for graphs, or
-                  <code>/help</code> for all commands.</div>
+            <div class="d-msg">
+              <div class="d-avatar bot">Nx</div>
+              <div class="d-content">
+                <div class="d-name">Numexa <span class="bot-tag">BOT</span></div>
+                <div class="d-text">👋 Ready to compute! Use <code>/calc</code> to evaluate expressions,
+                  <code>/derive</code> for derivatives, or <code>/matrix</code> for linear algebra. Type below to try.
+                </div>
               </div>
             </div>
           </div>
           <div class="discord-input-row">
-            <div class="discord-slash">/calc&nbsp;</div>
-            <input class="discord-input" id="discordIn" placeholder="Try: derivative(x^3,x) or det([[1,2],[3,4]])"
-              autocomplete="off">
-            <button class="discord-run-btn" onclick="runDiscord()">Send</button>
+            <span class="slash-badge">/calc</span>
+            <input class="discord-input" id="discordIn" placeholder="Try: derivative(x^4,x) or det([[1,2],[3,4]])"
+              autocomplete="off" spellcheck="false" />
+            <button class="discord-send" onclick="sendMsg()">Send</button>
           </div>
         </div>
+
+        <!-- SIDEBAR -->
         <div>
-          <div class="panel panel-sm panel-glow" style="margin-bottom:14px">
-            <div
-              style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:var(--mono);margin-bottom:10px">
-              Command Reference</div>
-            <table class="cmd-table">
-              <tr>
-                <th>Command</th>
-                <th>Description</th>
-              </tr>
-              <tr>
-                <td>/calc [expr]</td>
-                <td>Evaluate any math expression</td>
-              </tr>
-              <tr>
-                <td>/plot [fn]</td>
-                <td>Plot a function graph</td>
-              </tr>
-              <tr>
-                <td>/derive [f] [x]</td>
-                <td>Differentiate with respect to x</td>
-              </tr>
-              <tr>
-                <td>/matrix [A]</td>
-                <td>Matrix operations</td>
-              </tr>
-              <tr>
-                <td>/help</td>
-                <td>List all commands</td>
-              </tr>
-            </table>
+          <div class="cmd-panel">
+            <div class="cmd-panel-title">Commands</div>
+            <div class="cmd-row-sm"><span class="cmd-name-sm">/calc [expr]</span><span class="cmd-desc-sm">Evaluate any
+                expression</span></div>
+            <div class="cmd-row-sm"><span class="cmd-name-sm">/plot [fn]</span><span class="cmd-desc-sm">Plot a
+                function</span></div>
+            <div class="cmd-row-sm"><span class="cmd-name-sm">/derive [f] [x]</span><span class="cmd-desc-sm">Symbolic
+                derivative</span></div>
+            <div class="cmd-row-sm"><span class="cmd-name-sm">/matrix [A]</span><span class="cmd-desc-sm">Matrix
+                operations</span></div>
+            <div class="cmd-row-sm"><span class="cmd-name-sm">/convert [n] [u1] [u2]</span><span
+                class="cmd-desc-sm">Unit conversion</span></div>
+            <div class="cmd-row-sm"><span class="cmd-name-sm">/help</span><span class="cmd-desc-sm">List all
+                commands</span></div>
           </div>
-          <div class="panel panel-sm">
-            <div
-              style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:var(--mono);margin-bottom:10px">
-              Quick Examples</div>
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <div><button class="demo-btn" onclick="sendExample(this)" data-ex="2^32">2^32</button> <span
-                  style="color:var(--muted);font-size:.78rem">Integer power</span></div>
-              <div><button class="demo-btn" onclick="sendExample(this)"
-                  data-ex="derivative(x^4,x)">derivative(x^4,x)</button> <span
-                  style="color:var(--muted);font-size:.78rem">Differentiation</span></div>
-              <div><button class="demo-btn" onclick="sendExample(this)"
-                  data-ex="det([[1,2],[3,4]])">det([[1,2],[3,4]])</button> <span
-                  style="color:var(--muted);font-size:.78rem">Determinant</span></div>
-              <div><button class="demo-btn" onclick="sendExample(this)" data-ex="sin(pi/3)">sin(pi/3)</button> <span
-                  style="color:var(--muted);font-size:.78rem">Trig value</span></div>
-              <div><button class="demo-btn" onclick="sendExample(this)" data-ex="factorial(10)">factorial(10)</button>
-                <span style="color:var(--muted);font-size:.78rem">Factorial</span></div>
+
+          <div class="cmd-panel">
+            <div class="cmd-panel-title">Quick Examples</div>
+            <div class="example-btns">
+              <button class="ex-btn" data-ex="2^32">
+                <span class="ex-btn-code">2^32</span>
+                <span class="ex-btn-label">Integer power</span>
+                <span class="ex-btn-arrow">→</span>
+              </button>
+              <button class="ex-btn" data-ex="derivative(x^4, x)">
+                <span class="ex-btn-code">derivative(x^4, x)</span>
+                <span class="ex-btn-label">Differentiation</span>
+                <span class="ex-btn-arrow">→</span>
+              </button>
+              <button class="ex-btn" data-ex="det([[1,2],[3,4]])">
+                <span class="ex-btn-code">det([[1,2],[3,4]])</span>
+                <span class="ex-btn-label">Matrix det</span>
+                <span class="ex-btn-arrow">→</span>
+              </button>
+              <button class="ex-btn" data-ex="(3+4i)*(1-2i)">
+                <span class="ex-btn-code">(3+4i)*(1-2i)</span>
+                <span class="ex-btn-label">Complex math</span>
+                <span class="ex-btn-arrow">→</span>
+              </button>
+              <button class="ex-btn" data-ex="5 km to m">
+                <span class="ex-btn-code">5 km to m</span>
+                <span class="ex-btn-label">Unit convert</span>
+                <span class="ex-btn-arrow">→</span>
+              </button>
             </div>
+          </div>
+
+          <div style="text-align:center;margin-top:8px">
+            <a href="https://discord.com/oauth2/authorize?client_id=1460289617264775333&permissions=8445231037279296&integration_type=0&scope=applications.commands+bot"
+              class="btn btn-discord" target="_blank" rel="noopener" style="width:100%;justify-content:center">
+              <svg width="16" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" />
+              </svg>
+              Add Bot to Your Server
+            </a>
           </div>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </div>
+
   <footer>
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <a href="index.html" class="brand">
-          <div class="mark"><img src="assets/logo.png" alt="Numexa" /></div>
-          <div>
-            <div class="brand-title">Numexa</div>
-          </div>
+    <div class="footer-grid">
+      <div><a href="index.html" class="footer-logo">
+          <img src="assets/logo.png" alt="Numexa" style="width:34px;height:34px;border-radius:8px;display:block;box-shadow:0 0 16px rgba(6,182,212,.35);"><span class="nav-logo-name">Numexa</span>
         </a>
-        <p>Advanced scientific computation platform for Discord and web.</p>
+        <p class="footer-desc">Advanced scientific computation for Discord and the web. Built for students, researchers,
+          and engineers.</p>
       </div>
       <div class="footer-col">
         <h5>Product</h5><a href="playground.html">Playground</a><a href="preview.html">Bot Preview</a><a
           href="features.html">Features</a><a href="api.html">API</a>
       </div>
       <div class="footer-col">
-        <h5>Resources</h5><a href="docs.html">Documentation</a><a href="#">Changelog</a><a href="#">Support</a>
+        <h5>Resources</h5><a href="docs.html">Documentation</a><a href="changelog.html">Changelog</a><a
+          href="support.html">Support</a>
       </div>
       <div class="footer-col">
-        <h5>Legal</h5><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a>
+        <h5>Legal</h5><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a
+          href="support.html">Contact</a>
       </div>
     </div>
-    <div class="footer-bottom"><span>© 2025 Numexa. Built for math lovers.</span><span class="status-dot">All systems
-        operational</span></div>
+    <div class="footer-bottom"><span>© 2025 Numexa. Compute without limits.</span>
+      <div class="status-ok">
+        <div class="green-dot"></div><span>All systems operational</span>
+      </div>
+    </div>
   </footer>
+
   <script src="js/app.js"></script>
   <script>
+    const feed = document.getElementById('discordFeed');
+    const input = document.getElementById('discordIn');
 
-    function escHtml(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
-    function sendExample(btn) { document.getElementById("discordIn").value = btn.dataset.ex; runDiscord(); }
-    document.getElementById("discordIn").addEventListener("keydown", e => { if (e.key === "Enter") runDiscord(); });
-    function runDiscord() {
-      const inp = document.getElementById("discordIn"), feed = document.getElementById("discordFeed");
-      if (!inp || !feed) return; const expr = inp.value.trim(); if (!expr) return;
-      const userMsg = document.createElement("div"); userMsg.className = "discord-msg";
-      userMsg.innerHTML = `<div class="discord-avatar avatar-user">U</div><div class="discord-msg-content"><div class="name">You</div><div class="msg-text"><span class="discord-slash">/calc </span>${escHtml(expr)}</div></div>`;
-      feed.appendChild(userMsg);
-      evaluateExpr(expr, (res, isErr) => {
-        const bot = document.createElement("div"); bot.className = "discord-msg";
-        bot.innerHTML = `<div class="discord-avatar avatar-bot">N</div><div class="discord-msg-content"><div class="name">Numexa <span class="bot-tag">BOT</span></div><div class="discord-embed"><div class="embed-title">${isErr ? "⚠ Error" : "✅ Result"}</div><div class="embed-field"><strong>Input:</strong> ${escHtml(expr)}</div><div class="embed-field" style="margin-top:4px"><strong>${isErr ? "Error" : "Output"}:</strong> <span style="color:${isErr ? "var(--red)" : "var(--accent-2)"}">${escHtml(res)}</span></div></div></div>`;
-        feed.appendChild(bot); feed.scrollTop = feed.scrollHeight;
-        if (!isErr) histAdd(expr, res);
-      });
-      inp.value = ""; feed.scrollTop = feed.scrollHeight;
+    function addMsg(isBot, text, embed) {
+      const wrap = document.createElement('div'); wrap.className = 'd-msg';
+      const av = document.createElement('div'); av.className = 'd-avatar ' + (isBot ? 'bot' : 'user');
+      av.textContent = isBot ? 'Nx' : 'U';
+      const content = document.createElement('div'); content.className = 'd-content';
+      const name = document.createElement('div'); name.className = 'd-name';
+      name.innerHTML = isBot ? 'Numexa <span class="bot-tag">BOT</span>' : 'You';
+      const textEl = document.createElement('div'); textEl.className = 'd-text';
+      textEl.innerHTML = text;
+      content.appendChild(name); content.appendChild(textEl);
+      if (embed) {
+        const em = document.createElement('div'); em.className = 'd-embed';
+        em.innerHTML = `<div class="embed-title">Result</div><div class="embed-result">${embed.result}</div><div class="embed-meta">⏱ ${embed.ms}ms · Numexa v1.2</div>`;
+        content.appendChild(em);
+      }
+      wrap.appendChild(av); wrap.appendChild(content);
+      feed.appendChild(wrap);
+      feed.scrollTop = feed.scrollHeight;
     }
 
+    function sendMsg() {
+      const v = input.value.trim(); if (!v) return;
+      addMsg(false, `<code>/calc</code> ${v}`);
+      input.value = '';
+      setTimeout(() => {
+        const t0 = performance.now();
+        const r = numexaEval(v);
+        const ms = Math.round(performance.now() - t0);
+        if (r.ok) addMsg(true, `Evaluated your expression:`, { result: '= ' + r.result, ms });
+        else addMsg(true, `⚠️ <strong>Error:</strong> ${r.result}`);
+      }, 400);
+    }
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMsg(); });
+
+    document.querySelectorAll('.ex-btn').forEach(b => {
+      b.addEventListener('click', () => { input.value = b.dataset.ex; sendMsg(); });
+    });
   </script>
 </body>
 

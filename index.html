@@ -1,278 +1,734 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="icon" type="image/png" href="assets/favicon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap"
-    rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
-  <title>Numexa — Scientific Computing Platform</title>
+  <title>Numexa — Compute the Impossible</title>
   <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js" defer></script>
+  <style>
+    /* ── HOME-SPECIFIC ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 140px 48px 80px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124, 110, 255, .1);
+      border: 1px solid rgba(124, 110, 255, .25);
+      border-radius: 100px;
+      padding: 6px 16px 6px 10px;
+      font-size: 11px;
+      letter-spacing: .06em;
+      color: var(--accent);
+      margin-bottom: 40px;
+      animation: fadeUp .7s ease both;
+    }
+
+    .hero-title {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: clamp(52px, 9vw, 120px);
+      line-height: .95;
+      letter-spacing: -.025em;
+      margin-bottom: 28px;
+      animation: fadeUp .7s .08s ease both;
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 44px;
+      line-height: 1.75;
+      animation: fadeUp .7s .16s ease both;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 72px;
+      animation: fadeUp .7s .24s ease both;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(22px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* terminal */
+    .hero-terminal {
+      width: 100%;
+      max-width: 620px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 48px 120px rgba(0, 0, 0, .6), 0 0 0 1px rgba(124, 110, 255, .08), inset 0 1px 0 rgba(255, 255, 255, .04);
+      animation: fadeUp .7s .32s ease both;
+    }
+
+    .t-bar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 13px 20px;
+      background: rgba(255, 255, 255, .025);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .t-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .t-dot.r {
+      background: #ff5f57
+    }
+
+    .t-dot.y {
+      background: #febc2e
+    }
+
+    .t-dot.g {
+      background: #28c840
+    }
+
+    .t-label {
+      margin-left: auto;
+      font-size: 10px;
+      letter-spacing: .08em;
+      color: var(--dim);
+      text-transform: uppercase;
+    }
+
+    .t-body {
+      padding: 22px 24px;
+    }
+
+    .t-prompt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .t-ps {
+      color: var(--accent);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .t-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      caret-color: var(--accent);
+
+    }
+
+    .t-result {
+      min-height: 34px;
+      padding: 11px 15px;
+      background: rgba(124, 110, 255, .05);
+      border: 1px solid rgba(124, 110, 255, .1);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--accent3);
+      margin-bottom: 16px;
+      transition: all .3s;
+    }
+
+    .t-result.err {
+      color: var(--accent2);
+      background: rgba(255, 110, 124, .05);
+      border-color: rgba(255, 110, 124, .12);
+    }
+
+    .t-result.empty {
+      color: var(--dim);
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      font-size: 10px;
+      letter-spacing: .04em;
+      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 100px;
+
+      transition: all .15s;
+    }
+
+    .chip:hover {
+      color: var(--text);
+      border-color: var(--accent);
+      background: rgba(124, 110, 255, .08);
+    }
+
+    /* stats */
+    .stats-strip {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative;
+      z-index: 2;
+    }
+
+    .stat {
+      background: var(--surface);
+      padding: 32px;
+      text-align: center;
+    }
+
+    .stat-n {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 36px;
+      background: linear-gradient(135deg, var(--text), var(--muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-l {
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    /* features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+    }
+
+    .feat-icon {
+      font-size: 24px;
+      margin-bottom: 18px;
+    }
+
+    .feat-name {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: .02em;
+      margin-bottom: 10px;
+    }
+
+    .feat-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .feat-tag {
+      display: inline-block;
+      margin-top: 14px;
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(124, 110, 255, .08);
+      border: 1px solid rgba(124, 110, 255, .15);
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    /* examples */
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .ex-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+
+      transition: border-color .2s, background .2s;
+    }
+
+    .ex-card:hover {
+      border-color: var(--border2);
+      background: var(--surface2);
+    }
+
+    .ex-cat {
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 8px;
+    }
+
+    .ex-code {
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .ex-desc {
+      font-size: 11px;
+      color: var(--dim);
+      margin-bottom: 12px;
+    }
+
+    .ex-res {
+      font-size: 12px;
+      color: var(--muted);
+      min-height: 18px;
+      margin-bottom: 14px;
+    }
+
+    .ex-res.ok {
+      color: var(--accent3);
+    }
+
+    .ex-res.err {
+      color: var(--accent2);
+    }
+
+    .try-btn {
+      background: transparent;
+      border: 1px solid var(--border2);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 6px;
+
+      transition: all .15s;
+    }
+
+    .try-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(124, 110, 255, .06);
+    }
+
+    /* cta banner */
+    .cta-banner {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 24px;
+      padding: 72px 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(88, 101, 242, .14) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: clamp(26px, 4vw, 44px);
+      letter-spacing: -.02em;
+      margin-bottom: 14px;
+    }
+
+    .cta-desc {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 440px;
+      margin: 0 auto 36px;
+      line-height: 1.8;
+    }
+
+    @media(max-width:900px) {
+      .hero {
+        padding: 120px 24px 60px;
+      }
+
+      .stats-strip {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0 24px 60px;
+      }
+
+      .features-grid,
+      .examples-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-banner {
+        padding: 48px 24px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <canvas id="bgCanvas" aria-hidden="true"></canvas>
-  <div class="noise-overlay" aria-hidden="true"></div>
-  <div id="cursor" aria-hidden="true"></div>
-  <div id="cursor-ring" aria-hidden="true"></div>
-  <div id="toast-container"></div>
-  <header>
-    <div class="nav">
-      <a href="index.html" class="brand">
-        <div class="mark"><img src="assets/logo.png" alt="Numexa" /></div>
-        <div>
-          <div class="brand-title">Numexa</div>
-          <div class="brand-sub">Scientific Platform</div>
-        </div>
-      </a>
-      <nav class="menu" role="navigation" aria-label="Main">
-        <a href="index.html" class="nav-btn active">Home</a>
-        <a href="playground.html" class="nav-btn">Playground</a>
-        <a href="preview.html" class="nav-btn">Bot Preview</a>
-        <a href="features.html" class="nav-btn">Features</a>
-        <a href="docs.html" class="nav-btn">Docs</a>
-        <a href="api.html" class="nav-btn">API</a>
-      </nav>
-      <a class="nav-invite" href="https://discord.com/oauth2/authorize" target="_blank" rel="noopener">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+  <canvas id="bgCanvas"></canvas>
+  <div class="grain"></div>
+  <div id="toast"></div>
+
+  <nav class="top-nav">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Numexa"
+        style="width:34px;height:34px;border-radius:8px;display:block;box-shadow:0 0 16px rgba(6,182,212,.35);">
+      <span class="nav-logo-name">Numexa</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="playground.html">Playground</a></li>
+      <li><a href="preview.html">Bot Preview</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="docs.html">Docs</a></li>
+      <li><a href="api.html">API</a></li>
+    </ul>
+    <div class="nav-right"> <a href="https://discord.gg/rVpRZskrXC" class="nav-support" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
           <path
             d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" />
         </svg>
-        Invite Bot
+        Support Server
+      </a>
+
+      <a href="https://discord.com/oauth2/authorize?client_id=1460289617264775333&permissions=8445231037279296&integration_type=0&scope=applications.commands+bot"
+        class="nav-cta" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" />
+        </svg>
+        Add to Discord
       </a>
     </div>
-  </header>
-  <main>
+  </nav>
 
-    <section class="section hero">
-      <div>
-        <div class="hero-eyebrow"><span class="pulse-dot"></span> v1.2 · Now with Discord slash commands</div>
-        <h1>Scientific Math,<br><span class="grad">Beautifully Solved</span></h1>
-        <p class="hero-lead">Compute derivatives, plot functions, solve matrices, and run symbolic math — directly in
-          the browser and inside Discord.</p>
-        <div class="hero-btns">
-          <a href="playground.html" class="btn-primary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <polygon points="5,3 19,12 5,21" />
-            </svg>
-            Open Playground
-          </a>
-          <a href="docs.html" class="btn-outline">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
-            </svg>
-            View Docs
-          </a>
-        </div>
+  <div class="page">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-badge"><span class="pulse-dot"></span> v2.0 · Now with a whole lot of premium commands and tools
       </div>
-      <div>
-        <div style="position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:18px">
-          <div
-            style="position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,.18) 0%,transparent 70%);animation:pulse 3s infinite">
-          </div>
-          <img src="assets/favicon.png" alt="π"
-            style="width:130px;height:130px;border-radius:20px;position:relative;z-index:1;box-shadow:0 0 60px rgba(6,182,212,.3),0 20px 40px rgba(0,0,0,.5)">
+      <h1 class="hero-title">Compute the<br /><span class="grad">Impossible</span></h1>
+      <p class="hero-sub">Scientific math engine for Discord &amp; the web. Derivatives, matrices, symbolic algebra,
+        function plots — answers in milliseconds.</p>
+      <div class="hero-btns">
+        <a href="playground.html" class="btn btn-primary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polygon points="5,3 19,12 5,21" />
+          </svg>
+          Open Playground
+        </a>
+        <a href="features.html" class="btn btn-ghost">
+          Explore Features
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="hero-terminal">
+        <div class="t-bar">
+          <div class="t-dot r"></div>
+          <div class="t-dot y"></div>
+          <div class="t-dot g"></div>
+          <span class="t-label">numexa — expression evaluator</span>
         </div>
-        <div class="calc-box panel-glow">
-          <div class="calc-box-header">
-            <div class="dots">
-              <div class="dot dot-r"></div>
-              <div class="dot dot-y"></div>
-              <div class="dot dot-g"></div>
-            </div>
-            <span>numexa &gt; expression evaluator</span>
+        <div class="t-body">
+          <div class="t-prompt">
+            <span class="t-ps">nx&gt;</span>
+            <input id="heroInput" type="text" class="t-input" placeholder="derivative(x^3, x)" autocomplete="off"
+              spellcheck="false" />
           </div>
-          <input id="homeExpr" placeholder="Try: derivative(x^3,x) or 2^10 + sin(pi/2)" autocomplete="off"
-            spellcheck="false">
-          <div class="calc-example-btns">
-            <button class="demo-btn" data-ex="2^10">2^10</button>
-            <button class="demo-btn" data-ex="derivative(x^3,x)">d/dx x³</button>
-            <button class="demo-btn" data-ex="inv([[1,2],[3,4]])">Matrix Inv</button>
-            <button class="demo-btn" data-ex="sqrt(2)*pi">√2·π</button>
-            <button class="demo-btn" data-ex="sin(pi/6)">sin(π/6)</button>
+          <div class="t-result empty" id="heroResult">↑ Enter an expression or click an example below</div>
+          <div class="chips">
+            <button class="chip" data-ex="derivative(sin(x)*x^2, x)">d/dx sin(x)·x²</button>
+            <button class="chip" data-ex="inv([[1,2],[3,4]])">Matrix⁻¹</button>
+            <button class="chip" data-ex="simplify((x^2-1)/(x-1))">Simplify</button>
+            <button class="chip" data-ex="(3+4i)*(1-2i)">Complex</button>
+            <button class="chip" data-ex="factorial(12)">12!</button>
+            <button class="chip" data-ex="5 km to m">Units</button>
           </div>
-          <div class="calc-out pending" id="homeResult">↑ Press Enter or click an example</div>
         </div>
       </div>
     </section>
 
-    <section class="section" style="padding-top:0">
-      <h2 style="font-size:1.6rem;font-weight:800;margin-bottom:20px">What Numexa Can Do</h2>
+    <!-- STATS -->
+    <div class="stats-strip">
+      <div class="stat reveal">
+        <div class="stat-n" id="statCount">12,847</div>
+        <div class="stat-l">Expressions Evaluated</div>
+      </div>
+      <div class="stat reveal d1">
+        <div class="stat-n">72ms</div>
+        <div class="stat-l">Avg Response Time</div>
+      </div>
+      <div class="stat reveal d2">
+        <div class="stat-n">140+</div>
+        <div class="stat-l">Built-in Functions</div>
+      </div>
+      <div class="stat reveal d3">
+        <div class="stat-n">∞</div>
+        <div class="stat-l">Precision Mode</div>
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section class="section" style="padding-top:80px">
+      <div style="margin-bottom:48px" class="reveal">
+        <div class="section-label">Capabilities</div>
+        <h2 class="section-title">Everything Math<br />Should Be</h2>
+        <p class="section-desc">From basic arithmetic to symbolic calculus — built for students, researchers, and
+          engineers.</p>
+      </div>
       <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">∫</div>
-          <div class="feature-title">Calculus Engine</div>
-          <div class="feature-desc">Symbolic derivatives via math.js. Numerical integration support coming in v1.3.
+        <div class="feat panel-hover reveal">
+          <div class="feat-icon">∫</div>
+          <div class="feat-name">Calculus Engine</div>
+          <div class="feat-desc">Symbolic derivatives with full product, chain, and quotient rule support. Numerical
+            integration in v1.3.</div>
+          <span class="feat-tag">Symbolic</span>
+        </div>
+        <div class="feat panel-hover reveal d1">
+          <div class="feat-icon">⊞</div>
+          <div class="feat-name">Linear Algebra</div>
+          <div class="feat-desc">Matrix inverse, determinant, transpose, eigenvalues, and LU decomposition — any size.
           </div>
+          <span class="feat-tag">Matrices</span>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">⊞</div>
-          <div class="feature-title">Linear Algebra</div>
-          <div class="feature-desc">Matrix inverse, determinant, transpose, eigenvalues and system solving.</div>
+        <div class="feat panel-hover reveal d2">
+          <div class="feat-icon">📈</div>
+          <div class="feat-name">Function Plotter</div>
+          <div class="feat-desc">Interactive canvas plots with zoom, axis labels, and multi-function support. PNG export
+            ready.</div>
+          <span class="feat-tag">Visual</span>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">📈</div>
-          <div class="feature-title">Function Plotter</div>
-          <div class="feature-desc">Plot any single-variable function on an interactive canvas with axis labels.</div>
+        <div class="feat panel-hover reveal d1">
+          <div class="feat-icon">ℂ</div>
+          <div class="feat-name">Complex Numbers</div>
+          <div class="feat-desc">Full complex arithmetic: polar form, Euler's formula, modulus, and complex function
+            evaluation.</div>
+          <span class="feat-tag">Complex</span>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🤖</div>
-          <div class="feature-title">Discord Bot</div>
-          <div class="feature-desc">Slash commands in any server — rich embeds with results and plots.</div>
+        <div class="feat panel-hover reveal d2">
+          <div class="feat-icon">📐</div>
+          <div class="feat-name">Unit Conversion</div>
+          <div class="feat-desc">Natural-language unit conversion across SI, imperial, and scientific domains. Try
+            <code>5 km/h to mph</code>.
+          </div>
+          <span class="feat-tag">Units</span>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">⌨️</div>
-          <div class="feature-title">Playground</div>
-          <div class="feature-desc">Full calculator UI or multi-line text mode with persistent history.</div>
+        <div class="feat panel-hover reveal d3">
+          <div class="feat-icon">🎲</div>
+          <div class="feat-name">Statistics Suite</div>
+          <div class="feat-desc">Mean, variance, standard deviation, combinatorics, permutations, and probability
+            distributions.</div>
+          <span class="feat-tag">Stats</span>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔢</div>
-          <div class="feature-title">Scientific Mode</div>
-          <div class="feature-desc">Complex numbers, units, statistics, bitwise, and combinatorics.</div>
-        </div>
+      </div>
+      <div style="text-align:center;margin-top:40px" class="reveal">
+        <a href="features.html" class="btn btn-ghost">See All Features →</a>
       </div>
     </section>
 
-    <section class="section" style="padding-top:0">
-      <div class="panel panel-glow">
-        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:6px">Try Examples Live</h2>
-        <p style="color:var(--muted);font-size:.88rem;margin-bottom:20px">Click any Try button to evaluate instantly</p>
-        <div class="section-divider"></div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
-          <div class="panel" style="padding:16px">
-            <div
-              style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:var(--mono);margin-bottom:6px">
-              Symbolic</div><code>simplify((x^2-1)/(x-1))</code>
-            <p style="font-size:.78rem;color:var(--muted);margin:6px 0 10px">Simplify a rational expression</p><button
-              class="try-btn" data-e="simplify((x^2-1)/(x-1))">▶ Try</button>
-          </div>
-          <div class="panel" style="padding:16px">
-            <div
-              style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:var(--mono);margin-bottom:6px">
-              Calculus</div><code>derivative(sin(x)*x^2,x)</code>
-            <p style="font-size:.78rem;color:var(--muted);margin:6px 0 10px">Product rule derivative</p><button
-              class="try-btn" data-e="derivative(sin(x)*x^2,x)">▶ Try</button>
-          </div>
-          <div class="panel" style="padding:16px">
-            <div
-              style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:var(--mono);margin-bottom:6px">
-              Linear Algebra</div><code>det([[3,2],[1,4]])</code>
-            <p style="font-size:.78rem;color:var(--muted);margin:6px 0 10px">Matrix determinant</p><button
-              class="try-btn" data-e="det([[3,2],[1,4]])">▶ Try</button>
-          </div>
-          <div class="panel" style="padding:16px">
-            <div
-              style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:var(--mono);margin-bottom:6px">
-              Statistics</div><code>mean([2,4,6,8,10])</code>
-            <p style="font-size:.78rem;color:var(--muted);margin:6px 0 10px">Mean of a list</p><button class="try-btn"
-              data-e="mean([2,4,6,8,10])">▶ Try</button>
-          </div>
-          <div class="panel" style="padding:16px">
-            <div
-              style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:var(--mono);margin-bottom:6px">
-              Complex</div><code>(3+4i) * (1-2i)</code>
-            <p style="font-size:.78rem;color:var(--muted);margin:6px 0 10px">Complex multiplication</p><button
-              class="try-btn" data-e="(3+4i) * (1-2i)">▶ Try</button>
-          </div>
-          <div class="panel" style="padding:16px">
-            <div
-              style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-family:var(--mono);margin-bottom:6px">
-              Units</div><code>5 km to m</code>
-            <p style="font-size:.78rem;color:var(--muted);margin:6px 0 10px">Unit conversion</p><button class="try-btn"
-              data-e="5 km to m">▶ Try</button>
-          </div>
+    <!-- LIVE EXAMPLES -->
+    <section class="section">
+      <div style="margin-bottom:40px" class="reveal">
+        <div class="section-label">Playground</div>
+        <h2 class="section-title">Try It Live</h2>
+        <p class="section-desc">Every card computes instantly in your browser — powered by math.js.</p>
+      </div>
+      <div class="examples-grid">
+        <div class="ex-card reveal">
+          <div class="ex-cat">Calculus</div>
+          <div class="ex-code">derivative(sin(x)*x^2, x)</div>
+          <div class="ex-desc">Product rule: d/dx of sin(x)·x²</div>
+          <div class="ex-res" id="er0">—</div>
+          <button class="try-btn" data-idx="0" data-expr="derivative(sin(x)*x^2, x)">▶ Run</button>
         </div>
+        <div class="ex-card reveal d1">
+          <div class="ex-cat">Linear Algebra</div>
+          <div class="ex-code">det([[3,2,1],[1,4,2],[2,1,3]])</div>
+          <div class="ex-desc">Determinant of a 3×3 matrix</div>
+          <div class="ex-res" id="er1">—</div>
+          <button class="try-btn" data-idx="1" data-expr="det([[3,2,1],[1,4,2],[2,1,3]])">▶ Run</button>
+        </div>
+        <div class="ex-card reveal d2">
+          <div class="ex-cat">Complex</div>
+          <div class="ex-code">(3+4i) * (1-2i)</div>
+          <div class="ex-desc">Complex number multiplication</div>
+          <div class="ex-res" id="er2">—</div>
+          <button class="try-btn" data-idx="2" data-expr="(3+4i)*(1-2i)">▶ Run</button>
+        </div>
+        <div class="ex-card reveal">
+          <div class="ex-cat">Symbolic</div>
+          <div class="ex-code">simplify((x^3-x)/(x^2-1))</div>
+          <div class="ex-desc">Algebraic simplification</div>
+          <div class="ex-res" id="er3">—</div>
+          <button class="try-btn" data-idx="3" data-expr="simplify((x^3-x)/(x^2-1))">▶ Run</button>
+        </div>
+        <div class="ex-card reveal d1">
+          <div class="ex-cat">Statistics</div>
+          <div class="ex-code">std([4, 7, 13, 16, 21])</div>
+          <div class="ex-desc">Standard deviation of a dataset</div>
+          <div class="ex-res" id="er4">—</div>
+          <button class="try-btn" data-idx="4" data-expr="std([4, 7, 13, 16, 21])">▶ Run</button>
+        </div>
+        <div class="ex-card reveal d2">
+          <div class="ex-cat">Combinatorics</div>
+          <div class="ex-code">combinations(52, 5)</div>
+          <div class="ex-desc">Poker hands from a 52-card deck</div>
+          <div class="ex-res" id="er5">—</div>
+          <button class="try-btn" data-idx="5" data-expr="combinations(52, 5)">▶ Run</button>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:40px" class="reveal">
+        <a href="playground.html" class="btn btn-primary">Open Full Playground →</a>
       </div>
     </section>
 
-    <section class="section" style="padding-top:0">
-      <div class="panel panel-glow" style="text-align:center;padding:48px 32px">
-        <div style="font-size:2rem;margin-bottom:8px">🚀</div>
-        <h2 style="font-size:1.6rem;font-weight:800;margin-bottom:10px">Add Numexa to Discord</h2>
-        <p style="color:var(--muted);max-width:480px;margin:0 auto 24px">Invite the bot to your server and run
-          <code>/calc</code>, <code>/plot</code>, and <code>/help</code> in any channel.
-        </p>
-        <div class="hero-btns" style="justify-content:center">
-          <a class="btn-primary" href="https://discord.com/oauth2/authorize" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+    <!-- CTA -->
+    <section class="section">
+      <div class="cta-banner reveal">
+        <div style="font-size:56px;margin-bottom:20px">⚡</div>
+        <h2 class="cta-title">Add Numexa to Your Server</h2>
+        <p class="cta-desc">Free for all Discord servers. Invite in 10 seconds — no setup, no config, just math.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a href="https://discord.com/oauth2/authorize?client_id=1460289617264775333&permissions=8445231037279296&integration_type=0&scope=applications.commands+bot"
+            class="btn btn-discord" target="_blank" rel="noopener">
+            <svg width="17" height="13" viewBox="0 0 24 24" fill="currentColor">
               <path
                 d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" />
             </svg>
-            Invite to Discord
+            Invite Bot — Free
           </a>
-          <a href="preview.html" class="btn-outline">See Bot Preview</a>
+          <a href="preview.html" class="btn btn-ghost">See Bot Preview</a>
         </div>
       </div>
     </section>
-  </main>
+  </div>
+
   <footer>
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <a href="index.html" class="brand">
-          <div class="mark"><img src="assets/logo.png" alt="Numexa" /></div>
-          <div>
-            <div class="brand-title">Numexa</div>
-          </div>
+    <div class="footer-grid">
+      <div><a href="index.html" class="footer-logo">
+          <img src="assets/logo.png" alt="Numexa"
+            style="width:34px;height:34px;border-radius:8px;display:block;box-shadow:0 0 16px rgba(6,182,212,.35);"><span
+            class="nav-logo-name">Numexa</span>
         </a>
-        <p>Advanced scientific computation platform for Discord and web. Built for students, researchers, and engineers.
-        </p>
+        <p class="footer-desc">Advanced scientific computation for Discord and the web. Built for students, researchers,
+          and engineers.</p>
       </div>
       <div class="footer-col">
-        <h5>Product</h5>
-        <a href="playground.html">Playground</a>
-        <a href="preview.html">Bot Preview</a>
-        <a href="features.html">Features</a>
-        <a href="api.html">API</a>
+        <h5>Product</h5><a href="playground.html">Playground</a><a href="preview.html">Bot Preview</a><a
+          href="features.html">Features</a><a href="api.html">API</a>
       </div>
       <div class="footer-col">
-        <h5>Resources</h5>
-        <a href="docs.html">Documentation</a>
-        <a href="#">Changelog</a>
-        <a href="#">Support</a>
-        <a href="#">Roadmap</a>
+        <h5>Resources</h5><a href="docs.html">Documentation</a><a href="changelog.html">Changelog</a><a
+          href="support.html">Support</a>
       </div>
       <div class="footer-col">
-        <h5>Legal</h5>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Cookie Policy</a>
-        <a href="#">Contact</a>
+        <h5>Legal</h5><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a
+          href="support.html">Contact</a>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2025 Numexa. Built for math lovers.</span>
-      <span class="status-dot">All systems operational</span>
+    <div class="footer-bottom"><span>© 2025 Numexa. Compute without limits.</span>
+      <div class="status-ok">
+        <div class="green-dot"></div><span>All systems operational</span>
+      </div>
     </div>
   </footer>
+
   <script src="js/app.js"></script>
   <script>
-    const inp = document.getElementById('homeExpr');
-    const out = document.getElementById('homeResult');
-    function runHome() {
-      const v = inp.value.trim(); if (!v) return;
-      out.className = 'calc-out pending'; out.textContent = 'Evaluating…';
-      evaluateExpr(v, (res, isErr) => {
-        out.className = 'calc-out' + (isErr ? ' error' : '');
-        out.textContent = isErr ? res : '= ' + res;
-        if (!isErr) histAdd(v, res);
-      });
+    const heroInput = document.getElementById('heroInput');
+    const heroResult = document.getElementById('heroResult');
+    let evalCt = parseInt(localStorage.getItem('numexa_eval_ct') || '12847');
+
+    function runHero() {
+      const v = heroInput.value.trim(); if (!v) return;
+      heroResult.textContent = 'Computing…'; heroResult.className = 't-result';
+      setTimeout(() => {
+        const r = numexaEval(v);
+        heroResult.textContent = r.ok ? '= ' + r.result : '⚠ ' + r.result;
+        heroResult.className = 't-result' + (r.ok ? '' : ' err');
+        if (r.ok) { evalCt++; localStorage.setItem('numexa_eval_ct', evalCt); document.getElementById('statCount').textContent = evalCt.toLocaleString(); showToast('= ' + r.result); }
+      }, 70);
     }
-    inp.addEventListener('keydown', e => { if (e.key === 'Enter') runHome(); });
-    document.querySelectorAll('.demo-btn').forEach(b =>
-      b.addEventListener('click', () => { inp.value = b.dataset.ex; runHome(); })
-    );
-    document.querySelectorAll('.try-btn').forEach(b =>
-      b.addEventListener('click', () =>
-        evaluateExpr(b.dataset.e, (res, isErr) =>
-          showToast((isErr ? '⚠ ' : '= ') + res, isErr ? 'error' : 'success')
-        )
-      )
-    );
+    heroInput.addEventListener('keydown', e => { if (e.key === 'Enter') runHero(); });
+    document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => { heroInput.value = c.dataset.ex; runHero(); }));
+
+    document.querySelectorAll('.try-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = btn.dataset.idx, expr = btn.dataset.expr;
+        const el = document.getElementById('er' + idx); if (!el) return;
+        el.textContent = '…'; el.className = 'ex-res';
+        setTimeout(() => {
+          const r = numexaEval(expr);
+          el.textContent = r.ok ? '= ' + r.result : '⚠ ' + r.result;
+          el.className = 'ex-res ' + (r.ok ? 'ok' : 'err');
+          if (r.ok) { evalCt++; document.getElementById('statCount').textContent = evalCt.toLocaleString(); }
+        }, 60);
+      });
+    });
   </script>
 </body>
 

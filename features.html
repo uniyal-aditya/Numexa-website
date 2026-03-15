@@ -1,183 +1,555 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="icon" type="image/png" href="assets/favicon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap"
-    rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
-  <link rel="stylesheet" href="css/style.css" />
   <title>Features — Numexa</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js" defer></script>
+  <style>
+    .feat-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      padding: 56px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .feat-block:last-child {
+      border-bottom: none;
+    }
+
+    .feat-block.flip {
+      direction: rtl;
+    }
+
+    .feat-block.flip>* {
+      direction: ltr;
+    }
+
+    .feat-eyebrow {
+      font-size: 10px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .feat-block h2 {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 28px;
+      letter-spacing: -.02em;
+      margin-bottom: 14px;
+    }
+
+    .feat-block p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .feat-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .feat-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .feat-list li::before {
+      content: '✓';
+      color: var(--accent3);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .code-demo {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, .4);
+    }
+
+    .code-demo-bar {
+      padding: 12px 18px;
+      background: rgba(255, 255, 255, .025);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .cd-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+
+    .cd-dot.r {
+      background: #ff5f57
+    }
+
+    .cd-dot.y {
+      background: #febc2e
+    }
+
+    .cd-dot.g {
+      background: #28c840
+    }
+
+    .code-demo-body {
+      padding: 20px 22px;
+    }
+
+    .code-demo-body pre {
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+      font-size: 12.5px;
+      color: var(--text);
+    }
+
+    .code-demo-body pre .cm {
+      color: var(--dim);
+    }
+
+    .code-demo-body pre .kw {
+      color: var(--accent);
+    }
+
+    .code-demo-body pre .res {
+      color: var(--accent3);
+    }
+
+    .feat-try-row {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .feat-try-input {
+      flex: 1;
+      background: rgba(0, 0, 0, .3);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s;
+      cursor: none;
+    }
+
+    .feat-try-input:focus {
+      border-color: var(--accent);
+    }
+
+    .feat-try-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 10px;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      cursor: none;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+
+    .feat-try-btn:hover {
+      background: #6a5cee;
+    }
+
+    .feat-try-result {
+      font-size: 12px;
+      color: var(--accent3);
+      margin-top: 8px;
+      min-height: 18px;
+      font-family: var(--mono);
+    }
+
+    .feat-try-result.err {
+      color: var(--accent2);
+    }
+
+    /* COMPARISON TABLE */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      background: var(--border);
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .compare-cell {
+      background: var(--surface);
+      padding: 16px 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .compare-cell.head {
+      background: var(--surface2);
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--text);
+    }
+
+    .compare-cell.nx {
+      background: rgba(124, 110, 255, .05);
+    }
+
+    .chk {
+      color: var(--accent3);
+      font-size: 14px;
+    }
+
+    .cross {
+      color: var(--accent2);
+      font-size: 14px;
+    }
+
+    .partial {
+      color: #f59e0b;
+      font-size: 14px;
+    }
+
+    @media(max-width:900px) {
+
+      .feat-block,
+      .feat-block.flip {
+        grid-template-columns: 1fr;
+        direction: ltr;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <canvas id="bgCanvas" aria-hidden="true"></canvas>
-  <div class="noise-overlay" aria-hidden="true"></div>
-  <div id="cursor" aria-hidden="true"></div>
-  <div id="cursor-ring" aria-hidden="true"></div>
-  <div id="toast-container"></div>
-  <header>
-    <div class="nav">
-      <a href="index.html" class="brand">
-        <div class="mark"><img src="assets/logo.png" alt="Numexa" /></div>
-        <div>
-          <div class="brand-title">Numexa</div>
-          <div class="brand-sub">Scientific Platform</div>
-        </div>
-      </a>
-      <nav class="menu" role="navigation" aria-label="Main"><a href="index.html" class="nav-btn">Home</a>
-        <a href="playground.html" class="nav-btn">Playground</a>
-        <a href="preview.html" class="nav-btn">Bot Preview</a>
-        <a href="features.html" class="nav-btn active">Features</a>
-        <a href="docs.html" class="nav-btn">Docs</a>
-        <a href="api.html" class="nav-btn">API</a>
-      </nav>
-      <a class="nav-invite" href="https://discord.com/oauth2/authorize" target="_blank" rel="noopener"><svg width="16"
-          height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" />
-        </svg> Invite Bot</a>
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+  <canvas id="bgCanvas"></canvas>
+  <div class="grain"></div>
+  <div id="toast"></div>
+
+  <nav class="top-nav">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Numexa" style="width:34px;height:34px;border-radius:8px;display:block;box-shadow:0 0 16px rgba(6,182,212,.35);"><span class="nav-logo-name">Numexa</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="playground.html">Playground</a></li>
+      <li><a href="preview.html">Bot Preview</a></li>
+      <li><a href="features.html" class="active">Features</a></li>
+      <li><a href="docs.html">Docs</a></li>
+      <li><a href="api.html">API</a></li>
+    </ul>
+    <div class="nav-right">    <a href="https://discord.gg/rVpRZskrXC" class="nav-support" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
+      Support Server
+    </a>
+    
+    <a href="https://discord.com/oauth2/authorize?client_id=1460289617264775333&permissions=8445231037279296&integration_type=0&scope=applications.commands+bot"
+      class="nav-cta" target="_blank" rel="noopener">Add to Discord</a>
+  </nav>
+
+  <div class="page">
+    <div class="page-hero">
+      <div class="page-hero-eyebrow"><span class="pulse-dot"></span>Capabilities</div>
+      <h1>Everything<br /><span class="grad">Numexa Can Do</span></h1>
+      <p>A complete scientific computation suite — web-native and Discord-ready. Built on math.js with a custom
+        evaluation layer.</p>
     </div>
-  </header>
-  <main>
 
-    <section class="section">
-      <div style="margin-bottom:36px">
-        <div class="hero-eyebrow"><span class="pulse-dot"></span> Capabilities</div>
-        <h1 style="font-size:2rem;font-weight:800;margin-bottom:8px">Everything Numexa Can Do</h1>
-        <p style="color:var(--muted);max-width:560px">A complete scientific computation suite — in your browser and in
-          Discord.</p>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px">
+    <div class="section">
 
-        <div class="panel panel-glow">
-          <div class="feature-icon">∫</div>
-          <div class="feature-title" style="font-size:1.1rem;margin-bottom:8px">Calculus</div>
-          <p style="color:var(--muted);font-size:.88rem;margin-bottom:14px">Symbolic differentiation powered by math.js.
-            Chain, product, quotient rules — all handled automatically.</p>
-          <pre>derivative(x^4, x)           // 4 * x^3
-derivative(sin(x)*x, x)      // cos(x)*x + sin(x)
-derivative(log(x^2), x)      // 2 / x</pre>
+      <!-- CALCULUS -->
+      <div class="feat-block reveal">
+        <div>
+          <div class="feat-eyebrow">Calculus</div>
+          <h2>Symbolic Differentiation</h2>
+          <p>Full derivative engine with automatic application of product, chain, quotient, and power rules. No
+            approximations — exact symbolic results every time.</p>
+          <ul class="feat-list">
+            <li>Product, chain, and quotient rules applied automatically</li>
+            <li>Higher-order derivatives with nth-order support</li>
+            <li>Trigonometric, exponential, and logarithmic functions</li>
+            <li>Numerical integration support (v1.3 roadmap)</li>
+            <li>Works inside Discord embeds with formatted output</li>
+          </ul>
         </div>
-
-        <div class="panel panel-glow">
-          <div class="feature-icon">⊞</div>
-          <div class="feature-title" style="font-size:1.1rem;margin-bottom:8px">Linear Algebra</div>
-          <p style="color:var(--muted);font-size:.88rem;margin-bottom:14px">Full matrix operations using array syntax.
-            Supports any size matrix.</p>
-          <pre>inv([[1,2],[3,4]])            // Inverse
-det([[1,2],[3,4]])            // -2
-transpose([[1,2],[3,4]])      // [[1,3],[2,4]]
-lusolve([[2,0],[0,3]], [4,9]) // [2, 3]</pre>
-        </div>
-
-        <div class="panel panel-glow">
-          <div class="feature-icon">📈</div>
-          <div class="feature-title" style="font-size:1.1rem;margin-bottom:8px">Function Plotter</div>
-          <p style="color:var(--muted);font-size:.88rem;margin-bottom:14px">Interactive canvas plotter with glowing
-            curves, grid, and axis labels.</p>
-          <pre>sin(x) + 0.5 * cos(2*x)
-x^3 - 3*x
-1 / (1 + exp(-x))   // sigmoid</pre>
-        </div>
-
-        <div class="panel panel-glow">
-          <div class="feature-icon">🔢</div>
-          <div class="feature-title" style="font-size:1.1rem;margin-bottom:8px">Complex Numbers</div>
-          <p style="color:var(--muted);font-size:.88rem;margin-bottom:14px">Full complex arithmetic using <code>i</code>
-            as the imaginary unit.</p>
-          <pre>(3 + 4i) * (1 - 2i)    // 11 - 2i
-abs(3 + 4i)            // 5
-sqrt(-1)               // i
-exp(pi * i)            // -1  (Euler)</pre>
-        </div>
-
-        <div class="panel panel-glow">
-          <div class="feature-icon">📊</div>
-          <div class="feature-title" style="font-size:1.1rem;margin-bottom:8px">Statistics</div>
-          <p style="color:var(--muted);font-size:.88rem;margin-bottom:14px">Descriptive statistics on arrays — works
-            with any list of numbers.</p>
-          <pre>mean([2, 4, 6, 8, 10])       // 6
-std([2, 4, 6, 8, 10])        // 2.83...
-variance([1, 2, 3])          // 0.667
-median([5, 1, 9, 3])         // 4</pre>
-        </div>
-
-        <div class="panel panel-glow">
-          <div class="feature-icon">📐</div>
-          <div class="feature-title" style="font-size:1.1rem;margin-bottom:8px">Units &amp; Constants</div>
-          <p style="color:var(--muted);font-size:.88rem;margin-bottom:14px">Built-in unit conversions and
-            physical/mathematical constants.</p>
-          <pre>5 km to m                    // 5000 m
-100 mph to km/h              // 160.934...
-pi                           // 3.14159...
-phi                          // 1.61803... (golden ratio)</pre>
-        </div>
-
-        <div class="panel panel-glow">
-          <div class="feature-icon">🤖</div>
-          <div class="feature-title" style="font-size:1.1rem;margin-bottom:8px">Discord Integration</div>
-          <p style="color:var(--muted);font-size:.88rem;margin-bottom:14px">All features available via Discord slash
-            commands with rich embed responses.</p>
-          <pre>/calc derivative(x^3, x)
-/plot sin(x) * exp(-x/5)
-/derive x^4 * log(x)  x
-/matrix inv [[1,2],[3,4]]</pre>
-        </div>
-
-        <div class="panel panel-glow">
-          <div class="feature-icon">⌨️</div>
-          <div class="feature-title" style="font-size:1.1rem;margin-bottom:8px">Combinatorics</div>
-          <p style="color:var(--muted);font-size:.88rem;margin-bottom:14px">Factorials, combinations, permutations and
-            number theory.</p>
-          <pre>factorial(10)                // 3628800
-combinations(10, 3)          // 120
-permutations(5, 2)           // 20
-gcd(48, 18)                  // 6</pre>
-        </div>
-
-      </div>
-      <div class="panel panel-glow" style="margin-top:24px;text-align:center;padding:36px">
-        <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:8px">Ready to explore?</h2>
-        <p style="color:var(--muted);margin-bottom:20px">Open the Playground and start computing instantly — no install
-          needed.</p>
-        <div class="hero-btns" style="justify-content:center">
-          <a href="playground.html" class="btn-primary">Open Playground</a>
-          <a href="docs.html" class="btn-outline">Read the Docs</a>
-        </div>
-      </div>
-    </section>
-  </main>
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <a href="index.html" class="brand">
-          <div class="mark"><img src="assets/logo.png" alt="Numexa" /></div>
-          <div>
-            <div class="brand-title">Numexa</div>
+        <div class="code-demo reveal d1">
+          <div class="code-demo-bar">
+            <div class="cd-dot r"></div>
+            <div class="cd-dot y"></div>
+            <div class="cd-dot g"></div>
           </div>
+          <div class="code-demo-body">
+            <pre><span class="cm">// Product rule</span>
+<span class="kw">derivative</span>(sin(x) * x^2, x)
+<span class="res">→ cos(x) * x ^ 2 + sin(x) * 2 * x</span>
+
+<span class="cm">// Chain rule</span>
+<span class="kw">derivative</span>(sin(x^2), x)
+<span class="res">→ cos(x ^ 2) * 2 * x</span>
+
+<span class="cm">// Logarithm</span>
+<span class="kw">derivative</span>(log(x^3), x)
+<span class="res">→ 3 / x</span></pre>
+            <div class="feat-try-row">
+              <input class="feat-try-input" id="calcIn" placeholder="derivative(x^3, x)"
+                value="derivative(sin(x)*cos(x), x)" />
+              <button class="feat-try-btn" onclick="tryFeat('calcIn','calcRes')">▶ Try</button>
+            </div>
+            <div class="feat-try-result" id="calcRes"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LINEAR ALGEBRA -->
+      <div class="feat-block flip reveal">
+        <div>
+          <div class="feat-eyebrow">Linear Algebra</div>
+          <h2>Full Matrix Operations</h2>
+          <p>Comprehensive linear algebra toolset for any matrix size. Powered by math.js's optimized numeric engine
+            with exact results for integer matrices.</p>
+          <ul class="feat-list">
+            <li>Inverse, determinant, and transpose</li>
+            <li>LU decomposition and linear system solving</li>
+            <li>Eigenvalue computation</li>
+            <li>Matrix arithmetic: add, subtract, multiply</li>
+            <li>Works with complex-valued matrices</li>
+          </ul>
+        </div>
+        <div class="code-demo reveal d1">
+          <div class="code-demo-bar">
+            <div class="cd-dot r"></div>
+            <div class="cd-dot y"></div>
+            <div class="cd-dot g"></div>
+          </div>
+          <div class="code-demo-body">
+            <pre><span class="cm">// Inverse</span>
+<span class="kw">inv</span>([[1,2],[3,4]])
+<span class="res">→ [[-2, 1], [1.5, -0.5]]</span>
+
+<span class="cm">// Determinant</span>
+<span class="kw">det</span>([[3,2],[1,4]])
+<span class="res">→ 10</span>
+
+<span class="cm">// Solve Ax = b</span>
+<span class="kw">lusolve</span>([[2,0],[0,3]], [4,9])
+<span class="res">→ [[2], [3]]</span></pre>
+            <div class="feat-try-row">
+              <input class="feat-try-input" id="matIn" placeholder="det([[1,2],[3,4]])" value="inv([[1,2],[3,4]])" />
+              <button class="feat-try-btn" onclick="tryFeat('matIn','matRes')">▶ Try</button>
+            </div>
+            <div class="feat-try-result" id="matRes"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPLEX -->
+      <div class="feat-block reveal">
+        <div>
+          <div class="feat-eyebrow">Complex Numbers</div>
+          <h2>Full Complex Arithmetic</h2>
+          <p>First-class complex number support using <code>i</code> as the imaginary unit. Polar form, Euler's
+            identity, modulus, and argument all supported natively.</p>
+          <ul class="feat-list">
+            <li>Addition, subtraction, multiplication, division</li>
+            <li>Modulus (abs), argument (arg), conjugate</li>
+            <li>Euler's formula: exp(π·i) = -1</li>
+            <li>Complex-valued trig and exponential functions</li>
+            <li>Polar ↔ rectangular form conversion</li>
+          </ul>
+        </div>
+        <div class="code-demo reveal d1">
+          <div class="code-demo-bar">
+            <div class="cd-dot r"></div>
+            <div class="cd-dot y"></div>
+            <div class="cd-dot g"></div>
+          </div>
+          <div class="code-demo-body">
+            <pre><span class="cm">// Multiplication</span>
+(3 + 4i) * (1 - 2i)
+<span class="res">→ 11 - 2i</span>
+
+<span class="cm">// Euler's formula</span>
+<span class="kw">exp</span>(pi * i)
+<span class="res">→ -1 + 1.2246e-16i  ≈ -1</span>
+
+<span class="cm">// Modulus</span>
+<span class="kw">abs</span>(3 + 4i)
+<span class="res">→ 5</span></pre>
+            <div class="feat-try-row">
+              <input class="feat-try-input" id="cxIn" placeholder="(3+4i)*(1-2i)" value="abs(3+4i)" />
+              <button class="feat-try-btn" onclick="tryFeat('cxIn','cxRes')">▶ Try</button>
+            </div>
+            <div class="feat-try-result" id="cxRes"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="feat-block flip reveal">
+        <div>
+          <div class="feat-eyebrow">Statistics</div>
+          <h2>Statistics &amp; Combinatorics</h2>
+          <p>Full descriptive stats suite plus combinatorics and probability tools. Works on any numeric array — just
+            pass your data inline.</p>
+          <ul class="feat-list">
+            <li>Mean, median, mode, variance, standard deviation</li>
+            <li>Combinations C(n,r) and permutations P(n,r)</li>
+            <li>Factorial with arbitrary precision</li>
+            <li>Min, max, range operations</li>
+            <li>Probability distribution helpers (v1.3)</li>
+          </ul>
+        </div>
+        <div class="code-demo reveal d1">
+          <div class="code-demo-bar">
+            <div class="cd-dot r"></div>
+            <div class="cd-dot y"></div>
+            <div class="cd-dot g"></div>
+          </div>
+          <div class="code-demo-body">
+            <pre><span class="cm">// Descriptive stats</span>
+<span class="kw">std</span>([4, 7, 13, 16, 21])
+<span class="res">→ 6.28...</span>
+
+<span class="cm">// Combinatorics</span>
+<span class="kw">combinations</span>(52, 5)
+<span class="res">→ 2598960</span>
+
+<span class="cm">// Factorial</span>
+<span class="kw">factorial</span>(20)
+<span class="res">→ 2432902008176640000</span></pre>
+            <div class="feat-try-row">
+              <input class="feat-try-input" id="stIn" placeholder="mean([1,2,3,4,5])" value="combinations(10,3)" />
+              <button class="feat-try-btn" onclick="tryFeat('stIn','stRes')">▶ Try</button>
+            </div>
+            <div class="feat-try-result" id="stRes"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARISON -->
+    <div class="section" style="padding-top:0">
+      <div style="margin-bottom:32px" class="reveal">
+        <div class="section-label">Comparison</div>
+        <h2 class="section-title">Numexa vs the Rest</h2>
+      </div>
+      <div class="compare-grid reveal">
+        <div class="compare-cell head">Feature</div>
+        <div class="compare-cell head" style="text-align:center;color:var(--accent)">Numexa</div>
+        <div class="compare-cell head" style="text-align:center">Other Bots</div>
+
+        <div class="compare-cell">Symbolic Calculus</div>
+        <div class="compare-cell nx" style="text-align:center"><span class="chk">✓</span></div>
+        <div class="compare-cell" style="text-align:center"><span class="cross">✗</span></div>
+
+        <div class="compare-cell">Matrix Operations</div>
+        <div class="compare-cell nx" style="text-align:center"><span class="chk">✓</span></div>
+        <div class="compare-cell" style="text-align:center"><span class="partial">~</span></div>
+
+        <div class="compare-cell">Complex Numbers</div>
+        <div class="compare-cell nx" style="text-align:center"><span class="chk">✓</span></div>
+        <div class="compare-cell" style="text-align:center"><span class="partial">~</span></div>
+
+        <div class="compare-cell">Unit Conversion</div>
+        <div class="compare-cell nx" style="text-align:center"><span class="chk">✓</span></div>
+        <div class="compare-cell" style="text-align:center"><span class="cross">✗</span></div>
+
+        <div class="compare-cell">Web Playground</div>
+        <div class="compare-cell nx" style="text-align:center"><span class="chk">✓</span></div>
+        <div class="compare-cell" style="text-align:center"><span class="cross">✗</span></div>
+
+        <div class="compare-cell">REST API</div>
+        <div class="compare-cell nx" style="text-align:center"><span class="chk">✓</span></div>
+        <div class="compare-cell" style="text-align:center"><span class="cross">✗</span></div>
+
+        <div class="compare-cell">Free Forever</div>
+        <div class="compare-cell nx" style="text-align:center"><span class="chk">✓</span></div>
+        <div class="compare-cell" style="text-align:center"><span class="partial">~</span></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div><a href="index.html" class="footer-logo">
+          <img src="assets/logo.png" alt="Numexa" style="width:34px;height:34px;border-radius:8px;display:block;box-shadow:0 0 16px rgba(6,182,212,.35);"><span class="nav-logo-name">Numexa</span>
         </a>
-        <p>Advanced scientific computation platform for Discord and web.</p>
+        <p class="footer-desc">Advanced scientific computation for Discord and the web. Built for students, researchers,
+          and engineers.</p>
       </div>
       <div class="footer-col">
         <h5>Product</h5><a href="playground.html">Playground</a><a href="preview.html">Bot Preview</a><a
           href="features.html">Features</a><a href="api.html">API</a>
       </div>
       <div class="footer-col">
-        <h5>Resources</h5><a href="docs.html">Documentation</a><a href="#">Changelog</a><a href="#">Support</a>
+        <h5>Resources</h5><a href="docs.html">Documentation</a><a href="changelog.html">Changelog</a><a
+          href="support.html">Support</a>
       </div>
       <div class="footer-col">
-        <h5>Legal</h5><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a>
+        <h5>Legal</h5><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a
+          href="support.html">Contact</a>
       </div>
     </div>
-    <div class="footer-bottom"><span>© 2025 Numexa. Built for math lovers.</span><span class="status-dot">All systems
-        operational</span></div>
+    <div class="footer-bottom"><span>© 2025 Numexa. Compute without limits.</span>
+      <div class="status-ok">
+        <div class="green-dot"></div><span>All systems operational</span>
+      </div>
+    </div>
   </footer>
+
   <script src="js/app.js"></script>
+  <script>
+    function tryFeat(inId, resId) {
+      const v = document.getElementById(inId).value.trim(); if (!v) return;
+      const res = document.getElementById(resId);
+      res.textContent = 'Computing…'; res.className = 'feat-try-result';
+      setTimeout(() => {
+        const r = numexaEval(v);
+        res.textContent = r.ok ? '= ' + r.result : '⚠ ' + r.result;
+        res.className = 'feat-try-result' + (r.ok ? '' : ' err');
+        if (r.ok) showToast('= ' + r.result);
+      }, 60);
+    }
+    document.querySelectorAll('.feat-try-input').forEach(inp => {
+      inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          const resId = inp.id.replace('In', 'Res');
+          tryFeat(inp.id, resId);
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

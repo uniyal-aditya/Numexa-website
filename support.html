@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Support — Numexa</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+  <canvas id="bgCanvas"></canvas>
+  <div class="grain"></div>
+  <div id="toast"></div>
+
+  <nav class="top-nav">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Numexa" style="width:34px;height:34px;border-radius:8px;display:block;box-shadow:0 0 16px rgba(6,182,212,.35);"><span class="nav-logo-name">Numexa</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="playground.html">Playground</a></li>
+      <li><a href="preview.html">Bot Preview</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="docs.html">Docs</a></li>
+      <li><a href="api.html">API</a></li>
+    </ul>
+    <div class="nav-right">    <a href="https://discord.gg/rVpRZskrXC" class="nav-support" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
+      Support Server
+    </a>
+    
+    <a href="https://discord.com/oauth2/authorize?client_id=1460289617264775333&permissions=8445231037279296&integration_type=0&scope=applications.commands+bot"
+      class="nav-cta" target="_blank" rel="noopener">Add to Discord</a>
+  </nav>
+
+  <div class="page">
+    <div class="page-hero">
+      <div class="page-hero-eyebrow"><span class="pulse-dot"></span>Help Center</div>
+      <h1>Support</h1>
+      <p>Got a question or hit a bug? We're here to help. Check the docs first, then reach out.</p>
+    </div>
+
+    <div class="prose-page">
+
+      <!-- CONTACT CHANNELS -->
+      <div class="prose-block">
+        <h2>Get in Touch</h2>
+        <div class="contact-card">
+          <div class="contact-icon">💬</div>
+          <div>
+            <h3>Discord Server</h3>
+            <p>The fastest way to get help. Join our community server for real-time support from the team and other
+              users. Response time: under 2 hours.</p>
+            <a href="https://discord.gg/numexa" target="_blank" rel="noopener">Join the Numexa Discord →</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">📧</div>
+          <div>
+            <h3>Email Support</h3>
+            <p>For account issues, API access requests, partnership inquiries, or anything you'd rather not post
+              publicly. Response time: 24–48 hours.</p>
+            <a href="mailto:support@numexa.dev">support@numexa.dev</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">🐛</div>
+          <div>
+            <h3>Bug Reports</h3>
+            <p>Found something broken? Please include the expression that caused the issue, what you expected, and what
+              actually happened.</p>
+            <a href="https://github.com/numexa/bot/issues" target="_blank" rel="noopener">Open a GitHub Issue →</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">💡</div>
+          <div>
+            <h3>Feature Requests</h3>
+            <p>Have an idea that would make Numexa better? We love hearing from users. Submit ideas on GitHub
+              Discussions or in our Discord #suggestions channel.</p>
+            <a href="https://github.com/numexa/bot/discussions" target="_blank" rel="noopener">Share an Idea →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="prose-block">
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>How do I add Numexa to my Discord server?</h3>
+        <p>Click the "Add to Discord" button at the top of any page. You'll be redirected to Discord's authorization
+          page — select your server and approve the required permissions. The bot is instantly active with no setup
+          needed.</p>
+
+        <h3>Why is the bot not responding to my commands?</h3>
+        <p>Make sure the bot has permission to read and send messages in the channel you're using. Numexa uses slash
+          commands — type <code>/</code> to see available commands. If it still doesn't respond, try kicking and
+          re-inviting the bot.</p>
+
+        <h3>Is Numexa free?</h3>
+        <p>Yes — the Discord bot and web playground are completely free. The API is currently in open beta with no
+          authentication required. Rate limits apply to prevent abuse. Paid tiers may be introduced for high-volume API
+          usage in the future.</p>
+
+        <h3>What expressions does Numexa support?</h3>
+        <p>Numexa supports everything math.js supports: arithmetic, algebra, calculus (derivatives), linear algebra
+          (matrices), complex numbers, statistics, unit conversion, and more. See the <a href="docs.html">full
+            documentation</a> for a complete reference.</p>
+
+        <h3>Why did I get an unexpected result?</h3>
+        <p>A few common gotchas: trigonometric functions use radians by default (<code>sin(pi/6)</code> not
+          <code>sin(30)</code>). Exponentiation uses <code>^</code> or <code>**</code>. Matrix inverse uses
+          <code>inv()</code>. Check the <a href="docs.html">docs</a> for exact syntax.</p>
+
+        <h3>Can I use Numexa's API in my own project?</h3>
+        <p>Yes! The API is open during beta. See the <a href="api.html">API documentation</a> for endpoints, request
+          formats, and response schemas. Attribution is appreciated but not required.</p>
+
+        <h3>How do I report a privacy concern?</h3>
+        <p>Email privacy@numexa.dev directly. We take privacy seriously and will respond within 48 hours.</p>
+
+        <h3>Is Numexa open source?</h3>
+        <p>The computation engine is built on <a href="https://mathjs.org" target="_blank" rel="noopener">math.js</a>
+          (open source, Apache 2.0). The Numexa bot and platform are currently proprietary. We plan to open-source parts
+          of the codebase in the future.</p>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="prose-block">
+        <h2>Helpful Resources</h2>
+        <ul>
+          <li><a href="docs.html">Full Documentation</a> — Complete reference for all functions and commands</li>
+          <li><a href="api.html">API Reference</a> — REST API endpoints and examples</li>
+          <li><a href="changelog.html">Changelog</a> — What's new in each version</li>
+          <li><a href="playground.html">Playground</a> — Test expressions in your browser</li>
+          <li><a href="privacy.html">Privacy Policy</a> — How we handle your data</li>
+          <li><a href="terms.html">Terms of Service</a> — Usage rules and guidelines</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div><a href="index.html" class="footer-logo">
+          <img src="assets/logo.png" alt="Numexa" style="width:34px;height:34px;border-radius:8px;display:block;box-shadow:0 0 16px rgba(6,182,212,.35);"><span class="nav-logo-name">Numexa</span>
+        </a>
+        <p class="footer-desc">Advanced scientific computation for Discord and the web.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5><a href="playground.html">Playground</a><a href="preview.html">Bot Preview</a><a
+          href="features.html">Features</a><a href="api.html">API</a>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5><a href="docs.html">Documentation</a><a href="changelog.html">Changelog</a><a
+          href="support.html">Support</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a
+          href="support.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Numexa. Compute without limits.</span>
+      <div class="status-ok">
+        <div class="green-dot"></div><span>All systems operational</span>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js" defer></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>

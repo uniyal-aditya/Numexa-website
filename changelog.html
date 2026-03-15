@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Changelog — Numexa</title>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div id="cursor"></div><div id="cursor-ring"></div>
+<canvas id="bgCanvas"></canvas><div class="grain"></div><div id="toast"></div>
+
+<nav class="top-nav">
+  <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="Numexa" style="width:34px;height:34px;border-radius:8px;display:block;box-shadow:0 0 16px rgba(6,182,212,.35);"><span class="nav-logo-name">Numexa</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="playground.html">Playground</a></li>
+    <li><a href="preview.html">Bot Preview</a></li><li><a href="features.html">Features</a></li>
+    <li><a href="docs.html">Docs</a></li><li><a href="api.html">API</a></li>
+  </ul>
+    <div class="nav-right">    <a href="https://discord.gg/rVpRZskrXC" class="nav-support" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.12 18.12.145 18.14a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
+      Support Server
+    </a>
+    
+  <a href="https://discord.com/oauth2/authorize" class="nav-cta" target="_blank" rel="noopener">Add to Discord</a>
+</nav>
+
+<div class="page">
+  <div class="page-hero">
+    <div class="page-hero-eyebrow"><span class="pulse-dot"></span>What's New</div>
+    <h1>Changelog</h1>
+    <p>Every update, fix, and new feature — version by version.</p>
+  </div>
+
+  <div class="prose-page">
+
+    <div class="section-label" style="margin-bottom:24px">LATEST RELEASE</div>
+
+    <div class="changelog-entry" style="border-left-color:var(--cyan)">
+      <div class="changelog-version">
+        <span class="changelog-v">v1.2.0</span>
+        <span class="badge badge-new">Latest</span>
+        <span class="changelog-date">MARCH 2025</span>
+      </div>
+      <h3>✦ Slash Commands — Full Rollout</h3>
+      <ul>
+        <li>Migrated all commands to Discord's slash command system</li>
+        <li>New <code>/derive</code> command for symbolic differentiation with variable selection</li>
+        <li>New <code>/convert</code> command for unit conversion with autocomplete</li>
+        <li>Improved embed formatting with step-by-step expression display</li>
+        <li>Response time dropped from ~150ms to ~72ms average</li>
+      </ul>
+      <h3>Web Platform</h3>
+      <ul>
+        <li>Launched new website with interactive Playground</li>
+        <li>Added Bot Preview simulator — test the bot without installing it</li>
+        <li>Dark-mode only design with animated background</li>
+        <li>Mobile-responsive layout across all pages</li>
+      </ul>
+      <h3>Bug Fixes</h3>
+      <ul>
+        <li>Fixed derivative parsing for nested trigonometric functions</li>
+        <li>Fixed matrix display truncation for large matrices</li>
+        <li>Fixed unit conversion for temperature (degC ↔ degF)</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry minor">
+      <div class="changelog-version">
+        <span class="changelog-v">v1.1.3</span>
+        <span class="badge badge-core">Stable</span>
+        <span class="changelog-date">JANUARY 2025</span>
+      </div>
+      <h3>Improvements</h3>
+      <ul>
+        <li>Added <code>simplify()</code> function for algebraic simplification</li>
+        <li>Improved error messages with suggestions for common mistakes</li>
+        <li>Added support for complex number display in polar form</li>
+        <li>Expanded unit conversion to include scientific units (atm, eV, etc.)</li>
+      </ul>
+      <h3>Bug Fixes</h3>
+      <ul>
+        <li>Fixed overflow for very large factorial computations</li>
+        <li>Fixed edge case in matrix determinant for singular matrices</li>
+        <li>Fixed <code>log()</code> ambiguity — now correctly uses natural log; <code>log10()</code> for base-10</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry minor">
+      <div class="changelog-version">
+        <span class="changelog-v">v1.1.0</span>
+        <span class="changelog-date">NOVEMBER 2024</span>
+      </div>
+      <h3>New Features</h3>
+      <ul>
+        <li>Statistics suite: <code>mean()</code>, <code>std()</code>, <code>variance()</code>, <code>median()</code></li>
+        <li>Combinatorics: <code>combinations()</code>, <code>permutations()</code>, <code>factorial()</code></li>
+        <li>Complex number support with <code>i</code> as imaginary unit</li>
+        <li>Euler's formula evaluation: <code>exp(pi*i)</code></li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry patch">
+      <div class="changelog-version">
+        <span class="changelog-v">v1.0.2</span>
+        <span class="changelog-date">OCTOBER 2024</span>
+      </div>
+      <h3>Patches</h3>
+      <ul>
+        <li>Fixed bot crash on empty expression input</li>
+        <li>Fixed rate limiting not resetting correctly per user</li>
+        <li>Improved bot reconnection on Discord gateway disconnect</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry patch">
+      <div class="changelog-version">
+        <span class="changelog-v">v1.0.0</span>
+        <span class="badge badge-core">Initial Release</span>
+        <span class="changelog-date">SEPTEMBER 2024</span>
+      </div>
+      <h3>Initial Release 🎉</h3>
+      <ul>
+        <li>Basic arithmetic: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>^</code></li>
+        <li>Trigonometric functions: <code>sin()</code>, <code>cos()</code>, <code>tan()</code> and inverses</li>
+        <li>Symbolic derivatives via <code>derivative(expr, x)</code></li>
+        <li>Matrix operations: <code>inv()</code>, <code>det()</code>, <code>transpose()</code></li>
+        <li>Discord prefix commands (<code>!calc</code>)</li>
+        <li>Built-in constants: <code>pi</code>, <code>e</code>, <code>phi</code>, <code>tau</code></li>
+      </ul>
+    </div>
+
+    <!-- ROADMAP -->
+    <div id="roadmap" class="prose-block" style="margin-top:48px">
+      <h2>Roadmap — v1.3</h2>
+      <p>Here's what we're working on for the next major release. Expect v1.3 in Q2 2025.</p>
+      <ul>
+        <li><strong>Numerical Integration</strong> — <code>integrate(f, a, b)</code> for definite integrals</li>
+        <li><strong>Function Plotting in Discord</strong> — PNG plot images directly in embeds</li>
+        <li><strong>Batch API Endpoint</strong> — evaluate multiple expressions in one request</li>
+        <li><strong>API Key System</strong> — authentication for high-volume API users</li>
+        <li><strong>LaTeX Output</strong> — render results as formatted LaTeX in Discord embeds</li>
+        <li><strong>Variable Persistence</strong> — store variables across a session with <code>/set x = 5</code></li>
+        <li><strong>Probability Distributions</strong> — normal, binomial, Poisson distributions</li>
+      </ul>
+      <p>Have a feature request? <a href="support.html">Let us know</a> — community votes influence the roadmap.</p>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div><a href="index.html" class="footer-logo"><img src="assets/logo.png" alt="Numexa" style="width:34px;height:34px;border-radius:8px;display:block;box-shadow:0 0 16px rgba(6,182,212,.35);"><span class="nav-logo-name">Numexa</span></a><p class="footer-desc">Advanced scientific computation for Discord and the web.</p></div>
+    <div class="footer-col"><h5>Product</h5><a href="playground.html">Playground</a><a href="preview.html">Bot Preview</a><a href="features.html">Features</a><a href="api.html">API</a></div>
+    <div class="footer-col"><h5>Resources</h5><a href="docs.html">Documentation</a><a href="changelog.html">Changelog</a><a href="support.html">Support</a></div>
+    <div class="footer-col"><h5>Legal</h5><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="support.html">Contact</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 Numexa. Compute without limits.</span><div class="status-ok"><div class="green-dot"></div><span>All systems operational</span></div></div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js" defer></script>
+  <script src="js/app.js"></script>
+</body></html>
