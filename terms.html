@@ -198,7 +198,7 @@
             const newWorker = reg.installing;
             newWorker.addEventListener('statechange', () => {
               if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                // New version available — force all tabs to reload
+                // New version available — force all tabs to reload7
                 navigator.serviceWorker.addEventListener('controllerchange', () => {
                   window.location.reload();
                 });
